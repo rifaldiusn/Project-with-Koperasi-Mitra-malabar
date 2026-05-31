@@ -9,6 +9,11 @@ class ProdukBase(BaseModel):
 class ProdukCreate(ProdukBase):
     pass
 
+class ProdukUpdate(BaseModel):
+    kode: Optional[str] = None
+    nama: Optional[str] = None
+    status: Optional[str] = None
+
 class Produk(ProdukBase):
     id_produk: int
 

@@ -9,6 +9,9 @@ class BriefBase(BaseModel):
 class BriefCreate(BriefBase):
     pass
 
+class BriefUpdate(BriefBase):
+    pass
+
 class Brief(BriefBase):
     id_brief: int
 

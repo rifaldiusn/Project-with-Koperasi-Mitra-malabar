@@ -11,6 +11,12 @@ class PenjualanBase(BaseModel):
 class PenjualanCreate(PenjualanBase):
     pass
 
+class PenjualanUpdate(BaseModel):
+    periode: Optional[date] = None
+    nominal: Optional[int] = None
+    jenis: Optional[int] = None
+    id_variasi: Optional[int] = None
+
 class Penjualan(PenjualanBase):
     id_penjualan: int
 

@@ -11,6 +11,12 @@ class PesanBase(BaseModel):
 class PesanCreate(PesanBase):
     pass
 
+class PesanUpdate(BaseModel):
+    periode: Optional[date] = None
+    dibuat: Optional[int] = None
+    dikirim: Optional[int] = None
+    id_produk: Optional[int] = None
+
 class Pesan(PesanBase):
     id_pesan: int
 

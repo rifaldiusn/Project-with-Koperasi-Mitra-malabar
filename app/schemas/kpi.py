@@ -9,6 +9,9 @@ class KPIBase(BaseModel):
 class KPICreate(KPIBase):
     pass
 
+class KPIUpdate(KPIBase):
+    pass
+
 class KPI(KPIBase):
     id_kpi: int
 

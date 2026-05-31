@@ -11,6 +11,13 @@ class VariasiBase(BaseModel):
 class VariasiCreate(VariasiBase):
     pass
 
+class VariasiUpdate(BaseModel):
+    kode: Optional[str] = None
+    nama: Optional[str] = None
+    harga: Optional[int] = None
+    status: Optional[int] = None
+    id_produk: Optional[int] = None
+
 class Variasi(VariasiBase):
     id_variasi: int
 

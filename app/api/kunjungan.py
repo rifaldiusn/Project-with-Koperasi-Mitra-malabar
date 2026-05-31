@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.orm import Session
-import os
-import uuid
-import shutil
 from typing import Optional
 
-from app.core.deps import get_db, require_sales
-from app.core import crud
+from app.services.deps import get_db, require_sales
+from app.services import crud
 from app import schemas, models
+from app.services.file import save_and_create_file, delete_file_record
 
 router = APIRouter()
 
@@ -27,30 +25,8 @@ def create_kunjungan(
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
 
-    # Save physical file securely
-    uploads_dir = "uploads"
-    os.makedirs(uploads_dir, exist_ok=True)
-    
-    file_extension = os.path.splitext(file.filename)[1]
-    unique_filename = f"{uuid.uuid4()}{file_extension}"
-    filepath = os.path.join(uploads_dir, unique_filename).replace("\\", "/")
-    
-    try:
-        with open(filepath, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-
-    file_size = os.path.getsize(filepath)
-    
-    # Create File record
-    file_in = schemas.FileCreate(
-        nama=file.filename,
-        jenis=file.content_type,
-        ukuran=file_size,
-        path=filepath
-    )
-    db_file = crud.file.create(db, obj_in=file_in)
+    # Save physical file securely and create File record
+    db_file = save_and_create_file(db, file)
 
     # Create Kunjungan record linked to File
     kunjungan_in = schemas.KunjunganCreate(
@@ -116,28 +92,8 @@ def update_kunjungan(
 
     old_file_id = None
     if file is not None:
-        uploads_dir = "uploads"
-        os.makedirs(uploads_dir, exist_ok=True)
-        
-        file_extension = os.path.splitext(file.filename)[1]
-        unique_filename = f"{uuid.uuid4()}{file_extension}"
-        filepath = os.path.join(uploads_dir, unique_filename).replace("\\", "/")
-        
-        try:
-            with open(filepath, "wb") as buffer:
-                shutil.copyfileobj(file.file, buffer)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-
-        file_size = os.path.getsize(filepath)
-        
-        file_in = schemas.FileCreate(
-            nama=file.filename,
-            jenis=file.content_type,
-            ukuran=file_size,
-            path=filepath
-        )
-        db_file = crud.file.create(db, obj_in=file_in)
+        # Save physical file securely and create File record
+        db_file = save_and_create_file(db, file)
         
         old_file_id = kunjungan.id_file
         update_data["id_file"] = db_file.id_file
@@ -145,14 +101,7 @@ def update_kunjungan(
     updated_kunjungan = crud.kunjungan.update(db, db_obj=kunjungan, obj_in=update_data)
 
     if old_file_id is not None:
-        old_file = crud.file.get(db, id=old_file_id)
-        if old_file:
-            try:
-                if old_file.path and os.path.exists(old_file.path):
-                    os.remove(old_file.path)
-            except Exception:
-                pass
-            crud.file.remove(db, id=old_file_id)
+        delete_file_record(db, old_file_id)
 
     return updated_kunjungan
 
@@ -171,14 +120,7 @@ def delete_kunjungan(
     removed_kunjungan = crud.kunjungan.remove(db, id=id_kunjungan)
 
     if old_file_id is not None:
-        old_file = crud.file.get(db, id=old_file_id)
-        if old_file:
-            try:
-                if old_file.path and os.path.exists(old_file.path):
-                    os.remove(old_file.path)
-            except Exception:
-                pass
-            crud.file.remove(db, id=old_file_id)
+        delete_file_record(db, old_file_id)
 
     return removed_kunjungan
 

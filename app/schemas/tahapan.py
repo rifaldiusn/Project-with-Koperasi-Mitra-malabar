@@ -7,13 +7,19 @@ class TahapanBase(BaseModel):
     aktivitas: Optional[str] = None
     deadline: Optional[date] = None
     status: Optional[int] = None
+
+class TahapanCreate(TahapanBase):
+    nama: str
+    id_campaign: int
+    id_akun: Optional[int] = None
+
+class TahapanUpdate(TahapanBase):
     id_akun: Optional[int] = None
     id_campaign: Optional[int] = None
 
-class TahapanCreate(TahapanBase):
-    pass
-
 class Tahapan(TahapanBase):
     id_tahapan: int
+    id_akun: Optional[int] = None
+    id_campaign: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)

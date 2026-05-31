@@ -7,12 +7,16 @@ class CampaignBase(BaseModel):
     keterangan: Optional[str] = None
     budget: Optional[int] = None
     batas: Optional[date] = None
-    id_akun: Optional[int] = None
+
 
 class CampaignCreate(CampaignBase):
     pass
 
+class CampaignUpdate(CampaignBase):
+    id_akun: Optional[int] = None
+
 class Campaign(CampaignBase):
     id_campaign: int
+    id_akun: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)

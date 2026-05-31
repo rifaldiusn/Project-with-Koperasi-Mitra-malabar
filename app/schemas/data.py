@@ -13,6 +13,14 @@ class DataBase(BaseModel):
 class DataCreate(DataBase):
     pass
 
+class DataUpdate(BaseModel):
+    periode: Optional[date] = None
+    dilihat: Optional[int] = None
+    diklik: Optional[int] = None
+    suka: Optional[int] = None
+    keranjang: Optional[int] = None
+    id_produk: Optional[int] = None
+
 class Data(DataBase):
     id_data: int
 

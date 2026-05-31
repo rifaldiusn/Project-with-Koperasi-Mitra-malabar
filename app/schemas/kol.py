@@ -9,6 +9,9 @@ class KOLBase(BaseModel):
 class KOLCreate(KOLBase):
     pass
 
+class KOLUpdate(KOLBase):
+    pass
+
 class KOL(KOLBase):
     id_kol: int
 

@@ -12,6 +12,9 @@ class DealingBase(BaseModel):
 class DealingCreate(DealingBase):
     pass
 
+class DealingUpdate(DealingBase):
+    pass
+
 class Dealing(DealingBase):
     id_dealing: int
 
