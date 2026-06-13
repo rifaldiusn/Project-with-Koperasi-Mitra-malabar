@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kunjungan - Koperasi Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Data Kunjungan</h1>
+                    <p>Catat dan pantau aktivitas kunjungan lapangan ke customer.</p>
+                </div>
+                <button class="btn btn-primary" id="btn-tambah-kunjungan">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Tambah Kunjungan
+                </button>
+            </div>
+
+            <div class="filters-bar">
+                <div class="search-input" style="position:relative;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:10px; top:12px; color:var(--text-muted)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-kunjungan" class="form-control" placeholder="Cari nama customer..." style="padding-left:35px;">
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <span style="font-size:0.875rem; color:var(--text-muted);">Dari:</span>
+                    <input type="date" id="filter-date-start" class="form-control" style="width:140px; padding:0.5rem;">
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <span style="font-size:0.875rem; color:var(--text-muted);">Hingga:</span>
+                    <input type="date" id="filter-date-end" class="form-control" style="width:140px; padding:0.5rem;">
+                </div>
+                <button class="btn btn-outline" id="btn-filter">Filter</button>
+            </div>
+
+            <div id="error-message" class="alert alert-error" style="display:none;"></div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Customer</th>
+                            <th>Tanggal Kunjungan</th>
+                            <th>Tujuan / Catatan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kunjungan-table-body">
+                        <!-- Data will be loaded here via JS -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <div style="font-size: 0.875rem; color: var(--text-muted);" id="pagination-info">Showing 0 entries</div>
+                    <div class="page-numbers" id="pagination-numbers"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form Tambah/Edit Kunjungan -->
+    <div class="modal-overlay" id="modal-kunjungan">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Tambah Kunjungan</h2>
+                <button class="modal-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div id="modal-error" class="alert alert-error" style="display:none;"></div>
+            <form id="form-kunjungan">
+                <input type="hidden" id="kunj-id">
+                
+                <div class="form-group">
+                    <label class="form-label">Nama Customer</label>
+                    <select id="kunj-customer" class="form-control" required>
+                        <option value="" disabled selected>Pilih Customer...</option>
+                        <!-- Loaded dynamically -->
+                        <option value="1">Budi Santoso</option>
+                        <option value="2">Siti Aminah</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Tanggal Kunjungan</label>
+                    <input type="datetime-local" id="kunj-tanggal" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tujuan / Catatan</label>
+                    <textarea id="kunj-catatan" class="form-control" rows="3" placeholder="Masukkan tujuan atau hasil kunjungan..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Lokasi Koordinat</label>
+                    <div style="display:flex; gap:0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" id="kunj-lat" class="form-control" placeholder="Latitude" readonly>
+                        <input type="text" id="kunj-long" class="form-control" placeholder="Longitude" readonly>
+                    </div>
+                    <button type="button" class="btn btn-outline" id="btn-lokasi" style="font-size:0.75rem; padding:0.5rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Ambil Lokasi Saat Ini
+                    </button>
+                </div>
+
+                <!-- Simulating file upload for bukti kunjungan -->
+                <div class="form-group">
+                    <label class="form-label">Bukti Kunjungan (Opsional)</label>
+                    <input type="file" id="kunj-bukti" class="form-control" accept="image/*">
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-modal">Simpan Kunjungan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Injection -->
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/kunjungan.js"></script>
+</body>
+</html>

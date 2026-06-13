@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Customer - Koperasi Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Data Customer</h1>
+                    <p>Manage your customer leads and active members.</p>
+                </div>
+                <button class="btn btn-primary" id="btn-tambah-customer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Tambah Customer
+                </button>
+            </div>
+
+            <div class="filters-bar">
+                <div class="search-input" style="position:relative;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:10px; top:12px; color:var(--text-muted)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-customer" class="form-control" placeholder="Cari nama, email, atau no telepon..." style="padding-left:35px;">
+                </div>
+                <select id="filter-jenis" class="form-control" style="width: 150px;">
+                    <option value="">Semua Jenis</option>
+                    <option value="cafe">Cafe</option>
+                    <option value="retail">Retail</option>
+                    <option value="perorangan">Perorangan</option>
+                </select>
+                <button class="btn btn-outline" id="btn-filter">Filter</button>
+            </div>
+
+            <div id="error-message" class="alert alert-error" style="display:none;"></div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>No Telepon</th>
+                            <th>Email</th>
+                            <th>Jenis</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-table-body">
+                        <!-- Data will be loaded here via JS -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <div style="font-size: 0.875rem; color: var(--text-muted);" id="pagination-info">Showing 0 entries</div>
+                    <div class="page-numbers" id="pagination-numbers">
+                        <!-- Pagination buttons -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form Tambah/Edit Customer -->
+    <div class="modal-overlay" id="modal-customer">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Tambah Customer</h2>
+                <button class="modal-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div id="modal-error" class="alert alert-error" style="display:none;"></div>
+            <form id="form-customer">
+                <input type="hidden" id="cust-id">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" id="cust-nama" class="form-control" placeholder="Masukkan nama lengkap sesuai identitas" required>
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">Nomor Telepon</label>
+                        <input type="text" id="cust-telp" class="form-control" placeholder="Contoh: 081234567890" required>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">Email (Opsional)</label>
+                        <input type="email" id="cust-email" class="form-control" placeholder="alamat@email.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Jenis Customer</label>
+                    <select id="cust-jenis" class="form-control" required>
+                        <option value="" disabled selected>Pilih jenis customer</option>
+                        <option value="cafe">Cafe</option>
+                        <option value="retail">Retail</option>
+                        <option value="perorangan">Perorangan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alamat Domisili</label>
+                    <textarea id="cust-alamat" class="form-control" rows="3" placeholder="Masukkan alamat lengkap (Jalan, RT/RW, Desa/Kelurahan)" required></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btn-submit-modal">Simpan Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Injection -->
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/customer.js"></script>
+</body>
+</html>

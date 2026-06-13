@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Details - Koperasi Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .detail-section {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .kpi-list {
+            list-style: none;
+            padding: 0;
+        }
+        .kpi-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .kpi-icon {
+            color: var(--primary-color);
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <a href="campaign.html" style="color:var(--text-muted); font-size:0.875rem; display:inline-flex; align-items:center; gap:4px; margin-bottom:8px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Kembali ke Campaign
+                    </a>
+                    <h1 id="cd-title">Memuat...</h1>
+                </div>
+            </div>
+
+            <div id="error-message" class="alert alert-error" style="display:none;"></div>
+
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:2rem;">
+                <!-- Left Column -->
+                <div>
+                    <div class="detail-section">
+                        <div class="section-header">
+                            <h3 style="display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Data Campaign</h3>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:1rem; margin-bottom: 1rem;">
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">TANGGAL MULAI</span>
+                                <div style="font-weight:600;" id="cd-start">-</div>
+                            </div>
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">DEADLINE CAMPAIGN</span>
+                                <div style="font-weight:600;" id="cd-end">-</div>
+                            </div>
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">BUDGET TOTAL</span>
+                                <div style="font-weight:600; color:var(--primary-dark);" id="cd-budget">-</div>
+                            </div>
+                        </div>
+                        <div style="background-color:#F9F9F4; padding:1rem; border-radius:6px;">
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Keterangan</span>
+                            <p style="font-size:0.875rem; margin-top:4px;" id="cd-desc">-</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="section-header">
+                            <h3 style="display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Campaign Brief</h3>
+                            <button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;" onclick="openModal('brief')">Tambah Brief</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Poin Mandatory</th><th>Detail Pesan</th><th>Aksi</th></tr></thead>
+                            <tbody id="brief-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="section-header">
+                            <h3 style="display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> KOL Partners</h3>
+                            <button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;" onclick="openModal('kol')">Add New KOL</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Nama PJ</th><th>Kategori</th><th>Kode Voucher</th><th>Rate Fee</th><th>Aksi</th></tr></thead>
+                            <tbody id="kol-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="detail-section">
+                        <div class="section-header">
+                            <h3 style="display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Campaign Timeline</h3>
+                            <button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;" onclick="openModal('tahapan')">Tambah Tahapan</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>Tahapan</th><th>Aktivitas Utama</th><th>Deadline</th><th>Status</th><th>Aksi</th></tr></thead>
+                            <tbody id="tahapan-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <div class="detail-section">
+                        <div class="section-header">
+                            <h3 style="display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> KPI Metrics</h3>
+                            <button class="btn-icon" onclick="openModal('kpi')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                        </div>
+                        <ul class="kpi-list" id="kpi-body">
+                            <!-- KPI Items loaded via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reusable Dynamic Modal -->
+    <div class="modal-overlay" id="dynamic-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="dyn-modal-title">Form</h2>
+                <button class="modal-close" onclick="closeDynamicModal()">&times;</button>
+            </div>
+            <div id="dyn-modal-error" class="alert alert-error" style="display:none;"></div>
+            <form id="dynamic-form">
+                <input type="hidden" id="dyn-type">
+                <input type="hidden" id="dyn-id">
+                <div id="dyn-form-fields"></div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" onclick="closeDynamicModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Injection -->
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/campaign-detail.js"></script>
+</body>
+</html>
