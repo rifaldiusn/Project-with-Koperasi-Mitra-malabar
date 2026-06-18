@@ -1,0 +1,352 @@
+/* --- DASHBOARD GRID --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-grid .card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+}
+
+.full-width-card {
+    grid-column: 1 / -1;
+}
+
+/* Dashboard Labels & Charts */
+.card-title {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+.erd-labels {
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+.chart-container {
+    flex: 1;
+    width: 100%;
+    height: 100px;
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-end;
+}
+.chart-large { height: 160px; }
+
+/* --- FILTER CONTAINER (Atas Tabel) --- */
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.filter-container .form-control {
+    background-color: #FDFDFB;
+}
+
+/* --- FORM CARD (Halaman Tambah/Edit Khusus Full Page) --- */
+/* Styling Utama Halaman Form */
+.form-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-header-img {
+    height: 140px;
+    width: 100%;
+    background-color: #E2E2D6;
+    background-size: cover;
+    background-position: center;
+}
+
+.form-padding {
+    padding: 2.5rem;
+}
+
+/* Grouping Input */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #FDFCF4; /* Krem background */
+    font-family: var(--font-family);
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Upload Box Area */
+.upload-box {
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    background-color: #F8F9FA;
+    cursor: pointer;
+    transition: 0.2s;
+    color: var(--text-muted);
+}
+
+.upload-box:hover {
+    border-color: var(--primary-color);
+    background-color: #F4F8EB;
+}
+
+/* Tombol Aksi */
+.btn-gps {
+    background-color: #F4F4EB;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+/* Styling text-based titles and links */
+.card-title-icon { 
+    font-weight: 700; 
+    font-size: 0.875rem; 
+    color: #444; 
+    letter-spacing: 0.5px;
+}
+.btn-text-action { 
+    background: none; 
+    border: none; 
+    color: #6D8A21; 
+    font-weight: 600; 
+    font-size: 0.875rem; 
+    cursor: pointer; 
+    display: inline-block; 
+}
+.btn-text-action:hover {
+    text-decoration: underline;
+}
+
+/* ========================================================
+   CSS STRUKTUR CAMPAIGN DETAIL (KOTAK, GRID, & PROGRESS)
+   ======================================================== */
+
+/* Pengaturan Teks Global Campaign */
+.label-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.val-bold { font-weight: 700; color: #111; }
+.font-monospace { font-family: monospace; font-size: 0.95rem; background: #eee; padding: 0.2rem 0.4rem; border-radius: 4px; }
+.text-theme-green { color: #6D8A21; }
+
+/* Header & Breadcrumb */
+.detail-top-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 2rem; 
+}
+.breadcrumb { font-size: 0.875rem; color: var(--text-muted); }
+.text-separator { margin: 0 0.5rem; color: #ccc; }
+.detail-actions { display: flex; align-items: center; gap: 1rem; }
+
+/* Status Badge */
+.badge-status { 
+    padding: 0.4rem 1rem; 
+    border-radius: 20px; 
+    font-weight: 600; 
+    font-size: 0.875rem; 
+}
+.badge-active-theme { background: #D1E2A3; color: #334015; }
+
+/* Grid & Cards (Ini yang membuat kotak-kotak putih) */
+.detail-grid-top { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1.5rem; 
+    margin-bottom: 1.5rem; 
+}
+.detail-card { 
+    background: var(--white); 
+    border-radius: 12px; 
+    border: 1px solid var(--border-color); 
+    padding: 2rem; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.spacing-bottom-md { margin-bottom: 1.5rem; }
+
+/* Header di dalam Card */
+.detail-card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1.5rem; 
+    border-bottom: 1px solid #f0f0f0; 
+    padding-bottom: 1rem; 
+}
+.card-title-icon { 
+    font-weight: 700; 
+    font-size: 0.875rem; 
+    color: #444; 
+    letter-spacing: 0.5px;
+}
+
+/* Info Grid (3 Kolom Tanggal & Budget) */
+.info-grid-meta { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 1.5rem; 
+    background: #FDFCF4; 
+    padding: 1rem; 
+    border-radius: 8px; 
+    border: 1px solid #f9f9f5; 
+}
+
+/* Progress Bar */
+.progress-block { display: flex; gap: 1.5rem; }
+.progress-box { flex: 1; display: flex; flex-direction: column; }
+.progress-bar { 
+    width: 100%; 
+    height: 6px; 
+    background: #E2E2D6; 
+    border-radius: 10px; 
+    margin: 0.5rem 0; 
+    overflow: hidden; 
+}
+.progress-fill { height: 100%; border-radius: 10px; }
+.fill-dark-gray { background: #555; width: 35%; }
+.fill-theme-green { background: #6D8A21; width: 42%; }
+
+/* Kotak KPI Target */
+.mb-xs { margin-bottom: 0.25rem; }
+.margin-bottom-xs { margin-bottom: 0.75rem; }
+.padding-bottom-sm { margin-bottom: 1.5rem; }
+.kpi-target-box { 
+    background: #F4F8EB; 
+    border: 1px solid #D1E2A3; 
+    padding: 1.25rem; 
+    border-radius: 8px; 
+}
+.check-list { 
+    margin: 0; 
+    font-size: 0.875rem; 
+    color: #333;
+}
+.check-list li { margin-bottom: 0.4rem; }
+
+/* Tabel & Utilities Lainnya */
+.table-w-brief { width: 30%; }
+.flex-align-center { display: flex; align-items: center; gap: 0.75rem; }
+
+/* Style Tombol Teks Murni */
+.btn-text-action { 
+    background: none; 
+    border: none; 
+    color: #6D8A21; 
+    font-weight: 600; 
+    font-size: 0.875rem; 
+    cursor: pointer; 
+    display: inline-block; 
+}
+.btn-text-action:hover {
+    text-decoration: underline;
+}
+
+/* ================= CSS PRODUK KHUSUS ================= */
+
+/* Status Pills untuk Tabel */
+.status-pill {
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.status-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+.status-active { background-color: #EAF2D3; color: #4A5B22; }
+.status-draft { background-color: #F1F1F1; color: #555555; }
+.status-inactive { background-color: #FEE2E2; color: #991B1B; }
+
+/* Upload Lingkaran (Foto Produk) */
+.image-upload-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background-color: #E2E2D6;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+.upload-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.5rem; opacity: 0; transition: 0.2s;
+}
+.image-upload-circle:hover .upload-overlay { opacity: 1; }
+
+/* Custom Radio Button Status (Active/Draft) */
+.status-toggle-group {
+    display: flex; gap: 0.5rem; height: 42px;
+}
+.status-radio {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    border: 1px solid var(--border-color); border-radius: 6px;
+    cursor: pointer; font-size: 0.875rem; font-weight: 500; color: #555;
+    background-color: var(--white); transition: 0.2s;
+}
+.status-radio input[type="radio"] { display: none; }
+.status-radio.active {
+    background-color: #F4F8EB; border-color: #A3C644; color: #334015;
+}
+
+.mt-4 { margin-top: 1.5rem; }

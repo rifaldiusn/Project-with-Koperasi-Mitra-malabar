@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Produk - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text" style="color:#4A5B22;">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+               <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
+                <a href="produk.html" class="menu-item active">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="topbar-space"></div>
+                <div class="search-wrapper search-white">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <button class="btn-icon"><i class="ph ph-bell"></i></button>
+                    <button class="btn-icon"><i class="ph ph-gear-six"></i></button>
+                    <a href="profil.html">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" alt="User" class="avatar">
+                    </a>
+                </div>
+            </header>
+
+            <div class="page-header header-spacing" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="page-title">
+                    <h1 style="margin: 0;">Daftar Produk</h1>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="tambah-produk.html" class="btn btn-primary btn-theme-green">
+                        <i class="ph ph-plus" style="margin-right:0.5rem;"></i> Tambah Produk
+                    </a>
+                    <button class="btn btn-primary btn-theme-dark">
+                        <i class="ph ph-cloud-arrow-up" style="margin-right:0.5rem;"></i> Input Excell
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-container search-white" style="justify-content: space-between;">
+                <div class="search-wrapper" style="border:none; padding:0; width:300px;">
+                    <i class="ph ph-magnifying-glass" style="color:#aaa;"></i>
+                    <input type="text" id="search-produk" placeholder="Search products..." style="background:transparent;">
+                </div>
+                <button class="btn-text-action" style="color:#555;"><i class="ph ph-funnel"></i> Filter</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Product Name</th>
+                            <th>Product Code</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="produk-table-body">
+                        </tbody>
+                </table>
+                <div class="pagination" style="color:#777; font-size:0.875rem;">
+                    <span id="page-info">Showing 1 to 5 of 24 entries</span>
+                    <div class="page-numbers">
+                        <button class="page-btn"><i class="ph ph-caret-left"></i></button>
+                        <button class="page-btn active" style="background:#A3C644; border:none; color:white;">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span>...</span>
+                        <button class="page-btn"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-produk.js"></script>
+</body>
+</html>

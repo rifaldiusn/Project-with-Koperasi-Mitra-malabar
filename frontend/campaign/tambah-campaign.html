@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Campaign - Mitra Malabar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo-circle">M</div>
+                <div class="sidebar-logo-text">Mitra <br> Malabar</div>
+            </div>
+            <nav class="sidebar-menu">
+               <a href="campaign.html" class="menu-item active">Campaign</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="topbar-space"></div>
+                <div class="user-profile">
+                    <button class="btn-text-action" style="color:var(--text-main);">Notifikasi</button>
+                    <a href="profil.html">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" alt="User" class="avatar">
+                    </a>
+                </div>
+            </header>
+
+            <div class="page-header header-spacing">
+                <div class="page-title">
+                    <h1>Tambah Campaign</h1>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-card-title">Informasi Campaign Baru</h2>
+                <p class="form-card-subtitle">Lengkapi data di bawah ini untuk menambahkan campaign baru ke dalam sistem Malabar.</p>
+
+                <form id="form-tambah-campaign">
+                    <div class="form-group">
+                        <label class="form-label">Nama Campaign</label>
+                        <input type="text" id="campaign-nama" class="form-control" placeholder="Masukkan nama program campaign" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tanggal Mulai</label>
+                            <input type="date" id="campaign-mulai" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tenggat Waktu (Deadline)</label>
+                            <input type="date" id="campaign-deadline" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Total Anggaran (Budget Total)</label>
+                        <input type="number" id="campaign-budget" class="form-control" placeholder="Contoh: 45000000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Keterangan / Deskripsi</label>
+                        <textarea id="campaign-deskripsi" class="form-control" rows="4" placeholder="Masukkan rincian singkat mengenai fokus atau tujuan utama dari program campaign..."></textarea>
+                    </div>
+
+                    <div class="form-actions-container">
+                        <a href="campaign.html" class="btn btn-outline">Batal</a>
+                        <button type="submit" class="btn btn-primary btn-campaign-save" id="btn-submit">Simpan Campaign</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-tambah-campaign.js"></script>
+</body>
+</html>

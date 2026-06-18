@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Akun - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/profil.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text" style="color:#4A5B22;">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar profile-topbar">
+                <h1 class="profile-title">Informasi Akun</h1>
+                <div class="profile-user-header">
+                    <span class="user-name">Admin Koperasi</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=114232&color=fff" alt="User" class="avatar-header">
+                </div>
+            </header>
+
+            <div class="profile-layout">
+                
+                <div class="profile-card align-center" style="height: fit-content;">
+                    <div class="avatar-wrapper">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" alt="Admin Koperasi" class="avatar-main" id="user-avatar">
+                        <div class="edit-badge" title="Ubah Foto Profil">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                        </div>
+                    </div>
+                    <h2 class="profile-name" id="user-name-display">Admin Koperasi</h2>
+                    <p class="profile-role" id="user-role-display">Super Admin</p>
+                </div>
+
+                <div class="profile-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5B22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <h3>Profil & Jabatan</h3>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nama Lengkap</label>
+                            <div class="info-field" id="info-nama">Admin Koperasi</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Jabatan</label>
+                            <div class="info-field" id="info-jabatan">Super Admin</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <div class="info-field" id="info-email">admin@mitramalabar.co.id</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">No Telepon</label>
+                            <div class="info-field" id="info-telp">+62 812-3456-7890</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <div class="info-field" id="info-username">demin</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2.5rem;">
+                        <button id="btn-logout" class="btn btn-logout">Logout</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-profil.js"></script>
+</body>
+</html> 

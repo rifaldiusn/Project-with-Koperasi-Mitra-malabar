@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Campaign - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text" style="color:#4A5B22;">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
+                <a href="campaign.html" class="menu-item active">Campaign</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+                <a href="kelola-akun.html" class="menu-item" style="margin-top:2rem;">Kelola Akun</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+    <div class="search-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Cari...">
+    </div>
+    
+    <div class="user-profile">
+        <button class="btn-icon">🔔</button>
+        <button class="btn-icon">⚙️</button>
+        
+        <a href="profil.html" style="display: flex; align-items: center;">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" 
+                 alt="User" 
+                 class="avatar" 
+                 style="cursor: pointer; transition: opacity 0.2s; border: 2px solid #547115;" 
+                 onmouseover="this.style.opacity='0.8'" 
+                 onmouseout="this.style.opacity='1'">
+        </a>
+    </div>
+            </header>
+
+            <div class="page-header header-spacing">
+                <div class="page-title">
+                    <h1>Data Campaign</h1>
+                    <p>Kelola dan pantau semua program campaign.</p>
+                </div>
+                <a href="tambah-campaign.html" class="btn btn-primary btn-campaign-add" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+    <i class="ph ph-plus"></i> Tambah Campaign
+</a>
+            </div>
+
+            <div class="view-toggle-pill">
+                <button class="btn-icon active-view"><i class="ph-fill ph-squares-four"></i></button>
+                <button class="btn-icon"><i class="ph ph-list"></i></button>
+            </div>
+
+            <div class="campaign-grid" id="campaign-grid-container">
+                </div>
+        </main>
+    </div>
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-campaign.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Produk - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text" style="color:#4A5B22;">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
+                <a href="campaign.html" class="menu-item">Campaign</a>
+                <a href="produk.html" class="menu-item active">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+                <a href="kelola-akun.html" class="menu-item" style="margin-top:2rem;">Kelola Akun</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-wrapper search-white">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <button class="btn-icon"><i class="ph ph-bell"></i></button>
+                    <button class="btn-icon"><i class="ph ph-gear-six"></i></button>
+                    <a href="profil.html"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" class="avatar"></a>
+                </div>
+            </header>
+
+            <form id="form-produk">
+                <div class="page-header header-spacing" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 style="margin: 0;" id="page-title">Tambah Produk</h1>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="produk.html" class="btn btn-outline search-white">Batal</a>
+                        <button type="submit" class="btn btn-primary btn-theme-dark">Simpan Perubahan</button>
+                    </div>
+                </div>
+
+                <div class="form-sections-wrapper" style="display:flex; flex-direction:column; gap:1.5rem;">
+                    
+                    <div class="detail-card">
+                        <div class="card-title-icon mb-3"><i class="ph ph-info" style="color:#6D8A21; font-size:1.25rem;"></i> Informasi Dasar</div>
+                        <div style="display:flex; gap:3rem;">
+                            <div style="flex:1;">
+                                <div class="form-group">
+                                    <label class="label-xs text-muted block mb-xs">Nama Produk</label>
+                                    <input type="text" id="prod-nama" class="form-control" placeholder="Kopi Arabika Malabar" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="label-xs text-muted block mb-xs">Kode Produk (SKU)</label>
+                                        <input type="text" id="prod-sku" class="form-control" placeholder="MLB-ARB-001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label-xs text-muted block mb-xs">Status Produk</label>
+                                        <div class="status-toggle-group">
+                                            <label class="status-radio active"><input type="radio" name="status" value="Active" checked> <i class="ph-fill ph-check-circle" style="color:#6D8A21;"></i> Active</label>
+                                            <label class="status-radio"><input type="radio" name="status" value="Draft"> <i class="ph ph-circle"></i> Draft</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:150px; display:flex; flex-direction:column; align-items:center;">
+                                <div class="image-upload-circle" style="background-image: url('https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&q=80');">
+                                    <div class="upload-overlay"><i class="ph ph-camera"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card-header" style="margin-top:2rem; border-bottom:none; padding-bottom:0.5rem;">
+                            <div class="card-title-icon"><i class="ph ph-list-dashes" style="color:#6D8A21; font-size:1.25rem;"></i> Variasi Produk</div>
+                            <button type="button" class="btn-text-action" id="btn-tambah-variasi">+ Tambah Variasi</button>
+                        </div>
+                        <table class="data-table search-white">
+                            <thead>
+                                <tr><th>NAMA VARIASI</th><th>KODE VARIASI</th><th>HARGA (RP)</th><th>STATUS</th><th>AKSI</th></tr>
+                            </thead>
+                            <tbody id="variasi-table-body">
+                                <tr>
+                                    <td>Standar</td><td>VAR-01</td><td>50.000</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><button type="button" class="btn-icon"><i class="ph ph-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-title-icon mb-3"><i class="ph ph-trend-up" style="color:#6D8A21; font-size:1.25rem;"></i> Metrik Interaksi</div>
+                        
+                        <div class="form-group">
+                            <div class="card-title-icon mb-xs" style="font-size:0.875rem;"><i class="ph ph-calendar-blank"></i> Periode data produk</div>
+                            <label class="label-xs text-muted block mb-xs">Tanggal Produk</label>
+                            <input type="date" class="form-control" style="max-width:300px;">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group"><label class="label-xs text-muted block mb-xs">Jumlah dilihat</label><input type="number" class="form-control"></div>
+                            <div class="form-group"><label class="label-xs text-muted block mb-xs">Jumlah diklik</label><input type="number" class="form-control"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="label-xs text-muted block mb-xs">Jumlah suka</label><input type="number" class="form-control"></div>
+                            <div class="form-group"><label class="label-xs text-muted block mb-xs">Jumlah masukkan keranjang</label><input type="number" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-title-icon mb-3"><i class="ph ph-truck" style="color:#6D8A21; font-size:1.25rem;"></i> Pelacakan Pesanan</div>
+                        
+                        <div class="form-group">
+                            <label class="label-xs text-muted block mb-xs">Periode produk dipesan</label>
+                            <input type="month" class="form-control" style="max-width:300px;">
+                        </div>
+
+                        <div class="card-title-icon mb-xs mt-4" style="font-size:0.875rem;"><i class="ph ph-factory"></i> Metrik Produksi</div>
+                        <input type="number" class="form-control mb-4" placeholder="Jumlah diproduksi">
+
+                        <div class="card-title-icon mb-xs mt-4" style="font-size:0.875rem;"><i class="ph ph-package"></i> Logistik Pengiriman</div>
+                        <label class="label-xs text-muted block mb-xs">Jumlah produk dikirim (Unit)</label>
+                        <input type="number" class="form-control">
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-title-icon mb-3"><i class="ph ph-chart-bar" style="color:#6D8A21; font-size:1.25rem;"></i> Analisis Penjualan</div>
+                        
+                        <div class="form-group">
+                            <label class="label-xs text-muted block mb-xs">Periode data produk penjualan</label>
+                            <input type="month" class="form-control">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="label-xs text-muted block mb-xs">Jumlah nominal penjualan</label>
+                                <div class="input-with-icon">
+                                    <span style="position:absolute; left:12px; top:10px; color:#555; font-size:0.875rem;">Rp</span>
+                                    <input type="text" class="form-control" style="padding-left:35px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="label-xs text-muted block mb-xs">Jenis penjualan</label>
+                                <select class="form-control"><option>Retail (Eceran)</option><option>Grosir</option></select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </main>
+    </div>
+    
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-form-produk.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Kunjungan - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item active">Kunjungan</a>
+                <a href="campaign.html" class="menu-item">Campaign</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+                <a href="kelola-akun.html" class="menu-item" style="margin-top:2rem;">Kelola Akun</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div style="flex:1;"><h1>Data Kunjungan</h1></div>
+                <a href="profil.html"><img src="https://ui-avatars.com/api/?name=Admin" class="avatar"></a>
+            </header>
+
+            <div class="page-header">
+                <p>Kelola dan pantau jadwal kunjungan customer Anda.</p>
+                <a href="tambah-kunjungan.html" class="btn btn-primary">+ Tambah Kunjungan</a>
+            </div>
+
+            <div class="filter-container">
+                <input type="text" id="search-kunjungan" class="form-control" placeholder="Cari nama customer...">
+                <input type="date" id="date-start" class="form-control">
+                <input type="date" id="date-end" class="form-control">
+                <button class="btn btn-outline">Filter</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>No</th><th>Nama Kunjungan</th><th>Tanggal</th><th>Tujuan</th><th>Aksi</th></tr>
+                    </thead>
+                    <tbody id="kunjungan-table-body"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-kunjungan.js"></script>
+</body>
+</html>
