@@ -1,0 +1,189 @@
+-- Active: 1778686697166@@127.0.0.1@3306@compro_db
+-- Active: 1778686697166@@127.0.0.1@3306@compro_db
+-- ==========================================
+-- LEVEL 0: Tabel Independen
+-- ==========================================
+
+CREATE TABLE Akun (
+    id_akun INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) UNIQUE,
+    nama VARCHAR(255),
+    telp VARCHAR(50),
+    role INT(1),
+    hashed_password TEXT,
+    salt TEXT
+);
+
+CREATE TABLE Produk (
+    id_produk INT PRIMARY KEY AUTO_INCREMENT,
+    kode VARCHAR(255) UNIQUE,
+    nama VARCHAR(255),
+    status VARCHAR(100)
+);
+
+CREATE TABLE File (
+    id_file INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    jenis VARCHAR(100),
+    ukuran INT,
+    path VARCHAR(255)
+);
+
+CREATE TABLE KOL (
+    id_kol INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    kategori TEXT,
+    rate TEXT
+);
+
+
+-- ==========================================
+-- LEVEL 1: Merujuk ke Tabel Level 0
+-- ==========================================
+
+CREATE TABLE Variasi (
+    id_variasi INT PRIMARY KEY AUTO_INCREMENT,
+    kode VARCHAR(255) UNIQUE,
+    nama VARCHAR(255),
+    harga INT(10),
+    status INT(10),
+    id_produk INT,
+    FOREIGN KEY (id_produk) REFERENCES Produk(id_produk) ON DELETE CASCADE
+);
+
+CREATE TABLE Token (
+    id_token INT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255),
+    id_akun INT,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE CASCADE
+);
+
+CREATE TABLE Data (
+    id_data INT PRIMARY KEY AUTO_INCREMENT,
+    periode DATE,
+    dilihat INT,
+    diklik INT,
+    suka INT,
+    keranjang INT,
+    id_produk INT,
+    FOREIGN KEY (id_produk) REFERENCES Produk(id_produk) ON DELETE CASCADE
+);
+
+CREATE TABLE Pesan (
+    id_pesan INT PRIMARY KEY AUTO_INCREMENT,
+    periode DATE,
+    dibuat INT,
+    dikirim INT,
+    id_produk INT,
+    FOREIGN KEY (id_produk) REFERENCES Produk(id_produk) ON DELETE CASCADE
+);
+
+CREATE TABLE Target (
+    id_target INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    deskripsi TEXT, -- Typo 'deskrpisi' sudah diperbaiki
+    id_akun INT,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL
+);
+
+CREATE TABLE Customer (
+    id_customer INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    alamat TEXT,
+    email VARCHAR(255),
+    telp VARCHAR(50),
+    jenis VARCHAR(100),
+    id_akun INT,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL
+);
+
+CREATE TABLE Campaign (
+    id_campaign INT PRIMARY KEY AUTO_INCREMENT,
+    tanggal DATE,
+    keterangan TEXT,
+    budget INT,
+    batas DATE,
+    id_akun INT,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL
+);
+
+
+-- ==========================================
+-- LEVEL 2: Merujuk ke Tabel Level 1
+-- ==========================================
+
+CREATE TABLE Penjualan (
+    id_penjualan INT PRIMARY KEY AUTO_INCREMENT,
+    periode DATE,
+    nominal INT,
+    jenis INT,
+    id_variasi INT,
+    FOREIGN KEY (id_variasi) REFERENCES Variasi(id_variasi) ON DELETE CASCADE
+);
+
+CREATE TABLE Kunjungan (
+    id_kunjungan INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    catatan TEXT,
+    longitude VARCHAR(255),
+    latitude VARCHAR(255), -- Typo 'lautitude' sudah diperbaiki
+    id_file INT,
+    id_customer INT,
+    FOREIGN KEY (id_file) REFERENCES File(id_file) ON DELETE SET NULL,
+    FOREIGN KEY (id_customer) REFERENCES Customer(id_customer) ON DELETE CASCADE
+);
+
+CREATE TABLE Tahapan (
+    id_tahapan INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    aktivitas VARCHAR(255),
+    deadline DATE,
+    status INT,
+    id_akun INT,
+    id_campaign INT,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL,
+    FOREIGN KEY (id_campaign) REFERENCES Campaign(id_campaign) ON DELETE CASCADE
+);
+
+CREATE TABLE KPI (
+    id_kpi INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
+    deskripsi TEXT,
+    id_campaign INT,
+    FOREIGN KEY (id_campaign) REFERENCES Campaign(id_campaign) ON DELETE CASCADE
+);
+
+CREATE TABLE Brief (
+    id_brief INT PRIMARY KEY AUTO_INCREMENT,
+    poin VARCHAR(255),
+    detail_pesan VARCHAR(255),
+    id_campaign INT,
+    FOREIGN KEY (id_campaign) REFERENCES Campaign(id_campaign) ON DELETE CASCADE
+);
+
+CREATE TABLE Dealing (
+    id_dealing INT PRIMARY KEY AUTO_INCREMENT,
+    budget_produk INT,
+    kode_voucher VARCHAR(255),
+    lampiran TEXT,
+    id_campaign INT,
+    id_file INT,
+    id_kol INT,
+    FOREIGN KEY (id_campaign) REFERENCES Campaign(id_campaign) ON DELETE CASCADE,
+    FOREIGN KEY (id_file) REFERENCES File(id_file) ON DELETE SET NULL,
+    FOREIGN KEY (id_kol) REFERENCES KOL(id_kol) ON DELETE CASCADE
+);
+
+CREATE TABLE Log (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    id_akun INT NULL,
+    role INT NULL,
+    method VARCHAR(10),
+    path VARCHAR(500),
+    status_code INT,
+    ip_address VARCHAR(45),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL,
+    INDEX idx_log_role_created (role, created_at),
+    INDEX idx_log_akun_created (id_akun, created_at)
+);

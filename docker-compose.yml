@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    container_name: app-compro-web
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/app
+    command: sh -c "python -m app.core.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
