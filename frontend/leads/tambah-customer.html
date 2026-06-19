@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Customer - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text" style="color:#4A5B22;">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item active">Customer</a>
+                </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h1>Tambah Customer</h1>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-card-title">Informasi Customer Baru</h2>
+                <p class="form-card-subtitle">Lengkapi data di bawah ini untuk menambahkan calon nasabah ke dalam sistem Leads.</p>
+
+                <form id="form-tambah-customer">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" placeholder="Masukkan nama lengkap sesuai identitas" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nomor Telepon</label>
+                            <input type="text" class="form-control" placeholder="Contoh: 081234567890" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="alamat@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jenis Customer</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih jenis customer</option>
+                            <option value="cafe">Cafe</option>
+                            <option value="retail">Retail</option>
+                            <option value="perorangan">Perorangan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Alamat Domisili</label>
+                        <textarea class="form-control" rows="3" placeholder="Masukkan alamat lengkap (Jalan, RT/RW, Desa/Kelurahan)" required></textarea>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:2rem;">
+                        <a href="customer.html" class="btn btn-outline">Batal</a>
+                        <button type="submit" class="btn" style="background:#A3C644; color:#fff;">Simpan Customer</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="../js/admin-core.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Kunjungan - Mitra Malabar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-text">Mitra Malabar</div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item active">Kunjungan</a>
+                <a href="campaign.html" class="menu-item">Campaign</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+                <a href="kelola-akun.html" class="menu-item" style="margin-top:2rem;">Kelola Akun</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            
+            <a href="kunjungan.html" class="back-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Kembali ke Daftar
+            </a>
+
+            <div class="page-header header-spacing">
+                <div>
+                    <h1 id="page-title">Tambah Kunjungan</h1>
+                    <p>Catat rincian pertemuan dengan prospek atau anggota koperasi.</p>
+                </div>
+            </div>
+
+            <div class="form-card form-card-seamless">
+                <div class="form-header-img banner-kunjungan"></div>
+                
+                <div class="form-body">
+                    <form id="form-kunjungan">
+                        
+                        <h3 class="section-title">Detail Kunjungan</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Nama Kunjungan <span class="required-star">*</span></label>
+                            <input type="text" id="input-nama" class="form-control" placeholder="Masukkan nama kunjungan" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Catatan Kunjungan <span class="required-star">*</span></label>
+                            <textarea id="input-catatan" class="form-control" rows="4" placeholder="Tuliskan hasil diskusi, kesepakatan, atau observasi selama kunjungan..." required></textarea>
+                        </div>
+
+                        <div class="section-header">
+                            <h3 class="section-title no-margin">Data Lokasi</h3>
+                            <button type="button" id="btn-lokasi" class="btn-gps">
+                                <svg class="icon-sm" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                                Ambil Lokasi Saat Ini
+                            </button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Latitude</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="input-lat" class="form-control input-pad-left" placeholder="Contoh: -6.2088" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Longitude</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="input-long" class="form-control input-pad-left" placeholder="Contoh: 106.8456" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="section-title border-top">Dokumentasi</h3>
+                        <div class="form-group">
+                            <label class="form-label">Upload Bukti Foto</label>
+                            <div class="upload-box">
+                                <svg class="upload-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <p class="upload-title">Klik atau seret foto ke area ini</p>
+                                <p class="upload-subtitle">Format JPG, PNG (Maks. 5MB)</p>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="kunjungan.html" class="btn btn-outline btn-borderless">Batal</a>
+                            <button type="submit" class="btn btn-primary" id="btn-submit">Simpan Kunjungan</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-form-kunjungan.js"></script>
+</body>
+</html>

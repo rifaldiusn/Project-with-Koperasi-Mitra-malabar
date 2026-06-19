@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Akun - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo-text">Mitra Malabar</div></div>
+            <nav class="sidebar-menu">
+               <a href="dashboard.html" class="menu-item active">Dashboard</a>
+                <a href="customer.html" class="menu-item">Customer</a>
+                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
+                <a href="campaign.html" class="menu-item">Campaign</a>
+                <a href="produk.html" class="menu-item">Produk</a>
+                <a href="riwayat.html" class="menu-item">Riwayat</a>
+                <a href="kelola-akun.html" class="menu-item" style="margin-top:2rem;">Kelola Akun</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h1>Tambah Akun</h1>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-card-title">Informasi Akun Baru</h2>
+                <p class="form-card-subtitle">Lengkapi data di bawah ini untuk menambahkan calon akun ke dalam sistem Malabar.</p>
+
+                <form id="form-akun">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" id="input-nama" class="form-control" placeholder="Masukkan nama lengkap sesuai identitas" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="text" id="input-password" class="form-control" placeholder="Masukkan password akun" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nomor Telepon</label>
+                            <input type="text" id="input-telp" class="form-control" placeholder="Contoh: 081234567890" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="input-username" class="form-control" placeholder="Masukkan username akun" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jenis Akun</label>
+                        <select id="input-role" class="form-control" required>
+                            <option value="">Pilih jenis akun</option>
+                            <option value="admin">Admin</option>
+                            <option value="leads">Leads (Sales)</option>
+                            <option value="campaign">Campaign (Marketing)</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:3rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                        <a href="kelola-akun.html" class="btn btn-outline">Batal</a>
+                        <button type="submit" class="btn btn-primary" id="btn-submit">Simpan Akun</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-form-akun.js"></script>
+</body>
+</html>
