@@ -19,9 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (prodId) {
         // Simulasi Halaman Edit (Isi Form Otomatis)
-        document.getElementById('page-title').textContent = 'Edit Produk';
-        document.getElementById('prod-nama').value = 'Kopi Arabika Malabar';
-        document.getElementById('prod-sku').value = 'MLB-ARB-001';
+        const pageTitle = document.getElementById('page-title');
+        if (pageTitle) pageTitle.textContent = 'Edit Produk';
+        const prodNama = document.getElementById('prod-nama');
+        if (prodNama) prodNama.value = 'Kopi Arabika Malabar';
+        const prodSku = document.getElementById('prod-sku');
+        if (prodSku) prodSku.value = 'MLB-ARB-001';
     }
 
     // 3. Menambah Baris "Variasi Produk"
@@ -39,10 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><button type="button" class="btn-icon btn-hapus-var"><i class="ph ph-trash" style="color:var(--danger);"></i></button></td>
             `;
             tableVariasi.appendChild(tr);
+            showToast('Variasi baru ditambahkan', 'success');
 
             // Logika hapus baris yang baru ditambahkan
             tr.querySelector('.btn-hapus-var').addEventListener('click', () => {
                 tr.remove();
+                showToast('Variasi dihapus', 'success');
             });
         });
     }
@@ -52,14 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formProduk) {
         formProduk.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btnSubmit = formProduk.querySelector('button[type="submit"]');
-            btnSubmit.disabled = true;
-            btnSubmit.textContent = 'Menyimpan...';
+            const btnSubmit = formProduk.querySelector('button[type="submit"]') || document.querySelector('button[form="form-produk"]');
+            if (btnSubmit) {
+                btnSubmit.disabled = true;
+                btnSubmit.textContent = 'Menyimpan...';
+            }
 
             await new Promise(res => setTimeout(res, 800)); // Simulasi API
             
-            alert(prodId ? 'Produk berhasil diupdate!' : 'Produk baru berhasil ditambahkan!');
-            window.location.href = 'produk.html';
+            const productName = document.getElementById('prod-nama')?.value || 'Produk';
+            showToast(prodId ? `Produk "${productName}" berhasil diupdate!` : `Produk "${productName}" berhasil ditambahkan!`, 'success');
+            addNotification(prodId ? `Produk "${productName}" diperbarui` : `Produk baru "${productName}" ditambahkan`);
+            setTimeout(() => { window.location.href = 'produk.html'; }, 1000);
         });
     }
 });

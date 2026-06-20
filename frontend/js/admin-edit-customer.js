@@ -4,22 +4,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const customerId = urlParams.get('id');
 
     if (!customerId) {
-        alert('ID Customer tidak valid atau tidak ditemukan!');
-        window.location.href = 'customer.html';
+        showToast('ID Customer tidak valid atau tidak ditemukan!', 'error');
+        setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
         return;
     }
 
     const form = document.getElementById('form-edit-customer');
-    const submitBtn = document.getElementById('btn-submit');
+    // Use form query or button with form attribute 
+    const submitBtn = document.querySelector('button[form="form-edit-customer"]') || form?.querySelector('button[type="submit"]');
 
     // 2. Fungsi untuk mengambil data customer (Simulasi API GET /api/customer/get/1)
     const loadCustomerData = async () => {
         try {
-            /* SIMULASI BACKEND:
-            Jika backend sudah siap, gunakan:
-            const data = await api.get(`/customer/get/${customerId}`);
-            */
-            
             // Mock Data dari Test Plan PDF halaman 15
             const mockData = {
                 id: 1,
@@ -31,53 +27,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             // Masukkan data ke dalam form input
-            document.getElementById('cust-id').value = mockData.id;
-            document.getElementById('cust-nama').value = mockData.nama;
-            document.getElementById('cust-telp').value = mockData.telp;
-            document.getElementById('cust-email').value = mockData.email;
-            document.getElementById('cust-jenis').value = mockData.jenis;
-            document.getElementById('cust-alamat').value = mockData.alamat;
+            const fields = {
+                'cust-id': mockData.id,
+                'cust-nama': mockData.nama,
+                'cust-telp': mockData.telp,
+                'cust-email': mockData.email,
+                'cust-jenis': mockData.jenis,
+                'cust-alamat': mockData.alamat,
+            };
+            
+            Object.entries(fields).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value;
+            });
 
         } catch (error) {
-            alert('Gagal memuat data customer.');
+            showToast('Gagal memuat data customer.', 'error');
             console.error(error);
         }
     };
-
-    // 3. Fungsi untuk Submit Form Edit (Simulasi API PUT /api/customer/edit/1)
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Menyimpan...';
-
-        const payload = {
-            nama: document.getElementById('cust-nama').value,
-            telp: document.getElementById('cust-telp').value,
-            email: document.getElementById('cust-email').value,
-            jenis: document.getElementById('cust-jenis').value,
-            alamat: document.getElementById('cust-alamat').value
-        };
-
-        try {
-            /*
-            SIMULASI BACKEND:
-            Jika backend sudah siap, gunakan:
-            await api.put(`/customer/edit/${customerId}`, payload);
-            */
-            
-            // Mock delay jaringan
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            alert('Data customer berhasil di update!');
-            window.location.href = 'customer.html'; // Kembali ke tabel
-            
-        } catch (error) {
-            alert(error.data?.message || 'Gagal menyimpan data.');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Simpan Customer';
-        }
-    });
 
     // Jalankan fungsi load data saat halaman dibuka
     loadCustomerData();

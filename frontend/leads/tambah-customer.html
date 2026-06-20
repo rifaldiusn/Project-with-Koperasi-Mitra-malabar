@@ -65,5 +65,22 @@
     <script src="../js/api.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/admin-core.js"></script>
+    <script>
+        document.getElementById('form-tambah-customer').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.querySelector('button[form="form-tambah-customer"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                showToast('Customer berhasil ditambahkan!', 'success');
+                addNotification('Customer baru telah ditambahkan');
+                setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
+            } catch (error) {
+                showToast('Gagal menambahkan customer.', 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -30,27 +30,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Menyimpan...';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Menyimpan...';
+            }
 
             try {
                 // Simulasi delay request ke server
                 await new Promise(resolve => setTimeout(resolve, 600));
                 
                 if (akunId) {
-                    alert('Data akun berhasil diperbarui!');
+                    showToast('Data akun berhasil diperbarui!', 'success');
+                    addNotification('Akun telah diperbarui');
                 } else {
-                    alert('Akun baru berhasil ditambahkan!');
+                    showToast('Akun baru berhasil ditambahkan!', 'success');
+                    addNotification('Akun baru telah ditambahkan');
                 }
                 
                 // Kembali ke halaman daftar akun
-                window.location.href = 'kelola-akun.html';
+                setTimeout(() => { window.location.href = 'kelola-akun.html'; }, 1000);
                 
             } catch (error) {
-                alert('Gagal menyimpan data akun.');
+                showToast('Gagal menyimpan data akun.', 'error');
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = akunId ? 'Simpan Perubahan' : 'Simpan Akun';
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = akunId ? 'Simpan Perubahan' : 'Simpan Akun';
+                }
             }
         });
     }

@@ -68,14 +68,17 @@
     <script>
         document.getElementById('form-tambah-customer').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = document.querySelector('button[form="form-tambah-customer"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
             try {
-                // Simulate API call (replace with actual api.post later)
                 await new Promise(resolve => setTimeout(resolve, 500));
                 showToast('Customer berhasil ditambahkan!', 'success');
-                // Optional: Reset form after success
-                // e.target.reset();
+                addNotification('Customer baru telah ditambahkan');
+                setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
             } catch (error) {
                 showToast('Gagal menambahkan customer. Silakan coba lagi.', 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
             }
         });
     </script>

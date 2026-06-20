@@ -71,12 +71,17 @@
     <script>
         document.getElementById('form-edit-customer').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = document.querySelector('button[form="form-edit-customer"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
             try {
-                // Simulate API call
                 await new Promise(resolve => setTimeout(resolve, 500));
                 showToast('Customer berhasil diperbarui!', 'success');
+                addNotification('Data customer telah diperbarui');
+                setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
             } catch (error) {
                 showToast('Gagal memperbarui customer. Silakan coba lagi.', 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
             }
         });
     </script>

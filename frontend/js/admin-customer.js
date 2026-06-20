@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('table-body');
     const searchInput = document.getElementById('search-cust');
+    const filterStatus = document.getElementById('filter-status');
 
     // Data Mockup Sesuai Figma
     let customers = [
@@ -13,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderTable = (data) => {
         tableBody.innerHTML = '';
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#777;">Data tidak ditemukan</td></tr>';
+            return;
+        }
         data.forEach((cust, index) => {
             tableBody.innerHTML += `
                 <tr>
@@ -21,21 +26,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td style="padding:1rem; color:#555;">${cust.telp}</td>
                     <td style="padding:1rem; color:#555;">${cust.email}</td>
                     <td style="padding:1rem; text-align:right;">
-                        <button class="btn-icon">✏️</button>
-                        <button class="btn-icon">🗑️</button>
+                        <a href="edit-customer.html?id=${cust.id}" class="btn-icon" title="Edit">
+                            <i class="ph ph-pencil-simple" style="font-size:18px;"></i>
+                        </a>
+                        <button class="btn-icon btn-delete-cust" data-id="${cust.id}" data-nama="${cust.nama}" title="Hapus">
+                            <i class="ph ph-trash" style="font-size:18px; color:var(--danger);"></i>
+                        </button>
                     </td>
                 </tr>
             `;
         });
+
+        // Attach delete handlers
+        document.querySelectorAll('.btn-delete-cust').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = parseInt(btn.dataset.id);
+                const nama = btn.dataset.nama;
+                if (confirm(`Yakin ingin menghapus customer "${nama}"?`)) {
+                    customers = customers.filter(c => c.id !== id);
+                    renderTable(customers);
+                    showToast(`Customer "${nama}" berhasil dihapus`, 'success');
+                    addNotification(`Customer "${nama}" telah dihapus`);
+                }
+            });
+        });
+
+        // Update pagination info
+        const pageInfo = document.getElementById('page-info');
+        if (pageInfo) {
+            pageInfo.textContent = `Showing 1 to ${data.length} of ${data.length} entries`;
+        }
     };
 
-    // Filter Logic
+    // Search filter
+    const applyFilters = () => {
+        const keyword = searchInput ? searchInput.value.toLowerCase() : '';
+        const filtered = customers.filter(c => 
+            c.nama.toLowerCase().includes(keyword) ||
+            c.email.toLowerCase().includes(keyword) ||
+            c.telp.includes(keyword)
+        );
+        renderTable(filtered);
+    };
+
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const keyword = e.target.value.toLowerCase();
-            const filtered = customers.filter(c => c.nama.toLowerCase().includes(keyword));
-            renderTable(filtered);
-        });
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    if (filterStatus) {
+        filterStatus.addEventListener('change', applyFilters);
     }
 
     renderTable(customers);

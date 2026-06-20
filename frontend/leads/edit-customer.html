@@ -67,5 +67,23 @@
     <script src="../js/api.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/admin-core.js"></script>
+    <script src="../js/admin-edit-customer.js"></script>
+    <script>
+        document.getElementById('form-edit-customer').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.querySelector('button[form="form-edit-customer"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                showToast('Customer berhasil diperbarui!', 'success');
+                addNotification('Data customer telah diperbarui');
+                setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
+            } catch (error) {
+                showToast('Gagal memperbarui customer.', 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
+            }
+        });
+    </script>
 </body>
 </html>
