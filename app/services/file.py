@@ -43,42 +43,62 @@ def save_and_create_file(db: Session, file: UploadFile, folder_id: str = None) -
     if target_folder_id:
         file_metadata['parents'] = [target_folder_id]
     
-    file_extension = os.path.splitext(file.filename)[1]
-    unique_filename = f"{uuid.uuid4()}{file_extension}"
-    filepath = os.path.join(uploads_dir, unique_filename).replace("\\", "/")
+    media = MediaIoBaseUpload(file.file, mimetype=file.content_type, resumable=True)
     
     try:
-        with open(filepath, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        uploaded_file = service.files().create(
+            body=file_metadata, 
+            media_body=media, 
+            fields='id, webViewLink, size',
+            supportsAllDrives=True
+        ).execute()
+        
+        service.permissions().create(
+            fileId=uploaded_file.get('id'), 
+            body={'type': 'anyone', 'role': 'reader'},
+            supportsAllDrives=True
+        ).execute()
+        
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-
-    file_size = os.path.getsize(filepath)
+        raise HTTPException(status_code=500, detail=f"Failed to upload to GDrive: {str(e)}")
     
     # Create File record
     file_in = schemas.FileCreate(
         nama=file.filename,
         jenis=file.content_type,
-        ukuran=file_size,
-        path=filepath
+        ukuran=int(uploaded_file.get("size", getattr(file, "size", 0) or 0)),
+        path=uploaded_file.get("webViewLink")
     )
     db_file = crud.file.create(db, obj_in=file_in)
     return db_file
 
+def extract_file_id_from_url(url: str) -> str:
+    import re
+    match = re.search(r'/d/([a-zA-Z0-9_-]+)', url)
+    if match:
+        return match.group(1)
+    match = re.search(r'id=([a-zA-Z0-9_-]+)', url)
+    if match:
+        return match.group(1)
+    return None
 
 def delete_file_record(db: Session, file_id: int) -> bool:
     """
-    Deletes the physical file and its record from the database.
+    Deletes the file from GDrive and its record from the database.
     """
     file_obj = crud.file.get(db, id=file_id)
     if not file_obj:
         return False
         
     try:
-        if file_obj.path and os.path.exists(file_obj.path):
-            os.remove(file_obj.path)
-    except Exception:
-        pass
+        if file_obj.path and "google.com" in file_obj.path:
+            gdrive_file_id = extract_file_id_from_url(file_obj.path)
+            if gdrive_file_id:
+                service = get_drive_service()
+                service.files().delete(fileId=gdrive_file_id, supportsAllDrives=True).execute()
+    except Exception as e:
+        print(f"Warning: Failed to delete file from GDrive: {str(e)}")
         
     crud.file.remove(db, id=file_id)
     return True
+
