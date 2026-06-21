@@ -42,8 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td style="color:#555;">${akun.pass}</td>
                     <td>${getBadgeHTML(akun.role)}</td>
                     <td style="text-align: right;">
-                        <a href="edit-akun.html?id=${akun.id}" class="btn-icon" title="Edit"><i class="ph ph-pencil-simple" style="font-size:18px;"></i></a>
-                        <button class="btn-icon btn-delete-akun" data-id="${akun.id}" data-username="${akun.username}" title="Hapus"><i class="ph ph-trash" style="font-size:18px; color:var(--danger);"></i></button>
+                        <div class="dropdown-wrapper">
+                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-akun-${akun.id}">
+                                <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-akun-${akun.id}">
+                                <a href="edit-akun.html?id=${akun.id}" class="dropdown-item">
+                                    <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
+                                </a>
+                                <button class="dropdown-item danger btn-delete-akun" data-id="${akun.id}" data-username="${akun.username}">
+                                    <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
+                                </button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             `;

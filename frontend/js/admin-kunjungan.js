@@ -43,19 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Re-initialize dropdown toggles for newly rendered rows
-        tableBody.querySelectorAll('[data-dropdown-toggle]').forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const dropdownId = toggle.getAttribute('data-dropdown-toggle');
-                const dropdown = document.getElementById(dropdownId);
-                if (dropdown) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                        if (menu.id !== dropdownId) menu.classList.remove('active');
-                    });
-                    dropdown.classList.toggle('active');
-                }
-            });
-        });
+
 
         // Attach delete handlers
         tableBody.querySelectorAll('.btn-delete-kunjungan').forEach(btn => {

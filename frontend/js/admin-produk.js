@@ -28,8 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${p.kode}</td>
                     <td><span class="status-pill ${statusClass}">${p.status}</span></td>
                     <td style="text-align: right;">
-                        <a href="edit-produk.html?id=${p.id}" class="btn-icon" title="Edit"><i class="ph ph-pencil-simple"></i></a>
-                        <button class="btn-icon btn-delete-produk" data-id="${p.id}" data-nama="${p.nama}" title="Hapus"><i class="ph ph-trash" style="color:var(--danger);"></i></button>
+                        <div class="dropdown-wrapper">
+                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-admin-produk-${p.id}">
+                                <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-admin-produk-${p.id}">
+                                <a href="edit-produk.html?id=${p.id}" class="dropdown-item">
+                                    <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
+                                </a>
+                                <button class="dropdown-item danger btn-delete-produk" data-id="${p.id}" data-nama="${p.nama}">
+                                    <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
+                                </button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             `;

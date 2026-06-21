@@ -37,23 +37,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- DROPDOWN ACTION HANDLING ---
-    // Accept both data-dropdown-toggle and data-dropdown-target for backward compatibility
-    const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle], [data-dropdown-target]');
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation();
+    // Use Event Delegation for dropdown toggles so dynamic tables work automatically
+    document.addEventListener('click', (e) => {
+        const toggle = e.target.closest('[data-dropdown-toggle], [data-dropdown-target]');
+        if (toggle) {
+            e.stopImmediatePropagation();
             const dropdownId = toggle.getAttribute('data-dropdown-toggle') || toggle.getAttribute('data-dropdown-target');
             const dropdown = document.getElementById(dropdownId);
             if (dropdown) {
                 // Close all other dropdowns first
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    if (menu.id !== dropdownId) {
-                        menu.classList.remove('active');
-                    }
+                    if (menu.id !== dropdownId) menu.classList.remove('active');
                 });
+                
+                if (!dropdown.classList.contains('active')) {
+                    const rect = toggle.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - rect.bottom;
+                    const tr = toggle.closest('tr');
+                    const tbody = toggle.closest('tbody');
+                    let isLastRows = false;
+                    
+                    if (tr && tbody) {
+                        const rows = Array.from(tbody.children);
+                        const rowIndex = rows.indexOf(tr);
+                        if (rows.length - rowIndex <= 2) {
+                            isLastRows = true;
+                        }
+                    }
+                    
+                    if (spaceBelow < 150 || isLastRows) {
+                        dropdown.style.top = 'auto';
+                        dropdown.style.bottom = '100%';
+                        dropdown.style.marginTop = '0';
+                        dropdown.style.marginBottom = '0.5rem';
+                    } else {
+                        dropdown.style.top = '100%';
+                        dropdown.style.bottom = 'auto';
+                        dropdown.style.marginTop = '0.5rem';
+                        dropdown.style.marginBottom = '0';
+                    }
+                }
                 dropdown.classList.toggle('active');
             }
-        });
+        }
     });
 
     // Close dropdown when clicking outside
