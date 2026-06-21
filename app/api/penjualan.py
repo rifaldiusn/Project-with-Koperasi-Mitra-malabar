@@ -13,7 +13,6 @@ def create_penjualan(
     db: Session = Depends(get_db),
     _user=Depends(require_sales),
 ):
-    # Verify manually chosen id_variasi exists
     if payload.id_variasi is not None:
         variasi = db.query(models.Variasi).filter(models.Variasi.id_variasi == payload.id_variasi).first()
         if not variasi:
@@ -49,8 +48,7 @@ def update_penjualan(
     penjualan = crud.penjualan.get(db, id=id_penjualan)
     if not penjualan:
         raise HTTPException(status_code=404, detail="Penjualan not found")
-            
-    # Verify manually chosen id_variasi exists if updated
+
     if payload.id_variasi is not None and payload.id_variasi != penjualan.id_variasi:
         variasi = db.query(models.Variasi).filter(models.Variasi.id_variasi == payload.id_variasi).first()
         if not variasi:

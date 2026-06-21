@@ -9,3 +9,6 @@ python-jose
 python-multipart
 openpyxl>=3.1.0
 pandas>=2.0.0
+google-api-python-client
+google-auth-oauthlib
+slowapi

@@ -13,7 +13,6 @@ def create_data(
     db: Session = Depends(get_db),
     _user=Depends(require_sales),
 ):
-    # Verify manually chosen id_produk exists
     if payload.id_produk is not None:
         produk = db.query(models.Produk).filter(models.Produk.id_produk == payload.id_produk).first()
         if not produk:
@@ -50,7 +49,6 @@ def update_data(
     if not data:
         raise HTTPException(status_code=404, detail="Data not found")
             
-    # Verify manually chosen id_produk exists if updated
     if payload.id_produk is not None and payload.id_produk != data.id_produk:
         produk = db.query(models.Produk).filter(models.Produk.id_produk == payload.id_produk).first()
         if not produk:

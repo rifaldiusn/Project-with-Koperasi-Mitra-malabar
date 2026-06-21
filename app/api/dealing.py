@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import Optional
+import os
 
 from app.services.deps import get_db, require_sales
 from app.services import crud
@@ -20,20 +21,18 @@ def create_dealing(
     db: Session = Depends(get_db),
     _user=Depends(require_sales),
 ):
-    # Verify Campaign exists
     campaign = crud.campaign.get(db, id=id_campaign)
     if not campaign:
         raise HTTPException(status_code=404, detail="Campaign not found")
 
-    # Verify KOL exists
     kol = crud.kol.get(db, id=id_kol)
     if not kol:
         raise HTTPException(status_code=404, detail="KOL not found")
 
-    # Save physical file if provided
     db_file = None
     if file is not None:
-        db_file = save_and_create_file(db, file)
+        folder_id = os.getenv("GDRIVE_FOLDER_ID_DEALING")
+        db_file = save_and_create_file(db, file, folder_id)
 
     dealing_in = schemas.DealingCreate(
         budget_produk=budget_produk,
@@ -101,9 +100,9 @@ def update_dealing(
 
     old_file_id = None
     if file is not None:
-        # Save physical file and create File record
-        db_file = save_and_create_file(db, file)
         old_file_id = dealing.id_file
+        folder_id = os.getenv("GDRIVE_FOLDER_ID_DEALING")
+        db_file = save_and_create_file(db, file, folder_id)
         update_data["id_file"] = db_file.id_file
 
     updated_dealing = crud.dealing.update(db, db_obj=dealing, obj_in=update_data)

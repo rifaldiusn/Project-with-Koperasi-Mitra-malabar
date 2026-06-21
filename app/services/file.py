@@ -6,12 +6,42 @@ from sqlalchemy.orm import Session
 from app import schemas, models
 from app.services import crud
 
-def save_and_create_file(db: Session, file: UploadFile) -> models.File:
-    """
-    Saves a physical file to the uploads directory and creates a File record in the database.
-    """
-    uploads_dir = "uploads"
-    os.makedirs(uploads_dir, exist_ok=True)
+from dotenv import load_dotenv
+load_dotenv()
+
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseUpload
+
+def get_drive_service():
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
+    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN")
+
+    if not all([client_id, client_secret, refresh_token]):
+        raise HTTPException(status_code=500, detail="GDrive OAuth credentials not configured")
+
+    creds = Credentials(
+        token=None,  
+        refresh_token=refresh_token,
+        token_uri="https://oauth2.googleapis.com/token",
+        client_id=client_id,
+        client_secret=client_secret,
+        scopes=["https://www.googleapis.com/auth/drive.file"]
+    )
+    creds.refresh(Request())
+
+    return build('drive', 'v3', credentials=creds)
+
+def save_and_create_file(db: Session, file: UploadFile, folder_id: str = None) -> models.File:
+    service = get_drive_service()
+    
+    file_metadata = {'name': file.filename}
+
+    target_folder_id = folder_id or os.getenv("GDRIVE_FOLDER_ID")
+    if target_folder_id:
+        file_metadata['parents'] = [target_folder_id]
     
     file_extension = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{file_extension}"
