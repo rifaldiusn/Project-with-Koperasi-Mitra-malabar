@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
 from app.services.deps import get_db, require_sales
-from app.services import crud
+from app.services import crud, excel_import
 from app import models, schemas
 
 router = APIRouter()
@@ -65,3 +65,23 @@ def delete_produk(
     if not produk:
         raise HTTPException(status_code=404, detail="Product not found")
     return crud.produk.remove(db, id=id_produk)
+
+
+@router.post("/import-excel")
+def import_excel(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    _user=Depends(require_sales),
+):
+    """
+    Import data Produk dan Variasi dari file Excel.
+    Format Excel sesuai file: parentskudetail.20260604_20260604.xlsx
+    Kolom yang dibutuhkan: Kode Produk, Produk, Status Produk Saat Ini, Kode Variasi, Nama Variasi, Status Variasi Saat Ini
+    """
+    if not file.filename.endswith(('.xlsx', '.xls')):
+        raise HTTPException(status_code=400, detail="File harus berformat .xlsx atau .xls")
+    
+    df = excel_import.read_excel_file(file)
+    results = excel_import.import_from_excel(db, df)
+    
+    return results

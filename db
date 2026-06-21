@@ -1,4 +1,5 @@
-
+-- Active: 1778686697166@@127.0.0.1@3306@compro_db
+-- Active: 1778686697166@@127.0.0.1@3306@compro_db
 -- ==========================================
 -- LEVEL 0: Tabel Independen
 -- ==========================================
@@ -171,4 +172,18 @@ CREATE TABLE Dealing (
     FOREIGN KEY (id_campaign) REFERENCES Campaign(id_campaign) ON DELETE CASCADE,
     FOREIGN KEY (id_file) REFERENCES File(id_file) ON DELETE SET NULL,
     FOREIGN KEY (id_kol) REFERENCES KOL(id_kol) ON DELETE CASCADE
+);
+
+CREATE TABLE Log (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    id_akun INT NULL,
+    role INT NULL,
+    method VARCHAR(10),
+    path VARCHAR(500),
+    status_code INT,
+    ip_address VARCHAR(45),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_akun) REFERENCES Akun(id_akun) ON DELETE SET NULL,
+    INDEX idx_log_role_created (role, created_at),
+    INDEX idx_log_akun_created (id_akun, created_at)
 );

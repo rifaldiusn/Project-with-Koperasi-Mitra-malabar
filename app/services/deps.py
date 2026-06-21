@@ -45,3 +45,8 @@ def require_marketing(current_user: Akun = Depends(get_current_user)):
     if current_user.role not in (1, 3):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only marketing")
     return current_user
+
+def require_log_viewer(current_user: Akun = Depends(get_current_user)):
+    if current_user.role not in (1, 2, 3):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No access to logs")
+    return current_user

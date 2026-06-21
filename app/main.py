@@ -2,8 +2,11 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import os
 from app.api import *
+from app.middleware.audit import AuditLogMiddleware
 
 app = FastAPI()
+
+app.add_middleware(AuditLogMiddleware)
 
 # Mount static uploads
 os.makedirs("uploads", exist_ok=True)
@@ -35,3 +38,5 @@ app.include_router(data_router, prefix="/data", tags=["data"])
 app.include_router(pesan_router, prefix="/pesan", tags=["pesan"])
 #T
 app.include_router(tahapan_router, prefix="/tahapan", tags=["tahapan"])
+#L
+app.include_router(log_router, prefix="/log", tags=["log"])

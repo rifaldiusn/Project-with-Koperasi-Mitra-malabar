@@ -20,6 +20,7 @@ from .tahapan import Tahapan
 from .kpi import KPI
 from .brief import Brief
 from .dealing import Dealing
+from .log import Log
 
 __all__ = [
     "Akun",
@@ -38,5 +39,6 @@ __all__ = [
     "Tahapan",
     "KPI",
     "Brief",
-    "Dealing"
+    "Dealing",
+    "Log"
 ]

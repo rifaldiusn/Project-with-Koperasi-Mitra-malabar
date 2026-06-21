@@ -7,5 +7,5 @@ passlib==1.7.4
 bcrypt==3.2.2
 python-jose
 python-multipart
-google-api-python-client
-google-auth-oauthlib
+openpyxl>=3.1.0
+pandas>=2.0.0
