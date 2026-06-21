@@ -47,6 +47,21 @@ def list_kunjungan(
 ):
     return crud.kunjungan.get_multi(db)
 
+from sqlalchemy import func, extract
+
+@router.get("/chart/data")
+def get_kunjungan_chart_data(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+    res = db.query(
+        extract('month', models.Kunjungan.tanggal).label('bulan'),
+        func.count(models.Kunjungan.id_kunjungan).label("total_kunjungan")
+    ).filter(
+        extract('year', models.Kunjungan.tanggal) == year,
+        extract('month', models.Kunjungan.tanggal) >= start_month,
+        extract('month', models.Kunjungan.tanggal) <= end_month
+    ).group_by('bulan').order_by('bulan').all()
+    
+    return [{"bulan": int(r.bulan), "total_kunjungan": int(r.total_kunjungan or 0)} for r in res]
+
 @router.get("/{id_kunjungan}", response_model=schemas.Kunjungan)
 def get_kunjungan(
     id_kunjungan: int,

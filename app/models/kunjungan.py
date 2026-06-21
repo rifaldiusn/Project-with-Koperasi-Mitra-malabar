@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date
 from sqlalchemy.orm import relationship
+import datetime
 from app.db.base import Base
 
 class Kunjungan(Base):
@@ -7,6 +8,7 @@ class Kunjungan(Base):
     
     id_kunjungan = Column(Integer, primary_key=True, index=True, autoincrement=True)
     nama = Column(String(255))
+    tanggal = Column(Date, default=datetime.date.today)
     catatan = Column(Text)
     longitude = Column(String(255))
     latitude = Column(String(255))

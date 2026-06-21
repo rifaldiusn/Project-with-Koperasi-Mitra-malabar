@@ -27,6 +27,25 @@ def list_data(
 ):
     return crud.data.get_multi(db)
 
+from sqlalchemy import func, extract
+
+@router.get("/chart/produk/{id_produk}")
+def get_data_chart_produk(id_produk: int, year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+    res = db.query(
+        extract('month', models.Data.periode).label('bulan'),
+        func.sum(models.Data.suka).label("suka"),
+        func.sum(models.Data.keranjang).label("keranjang"),
+        func.sum(models.Data.diklik).label("diklik"),
+        func.sum(models.Data.dilihat).label("dilihat")
+    ).filter(
+        models.Data.id_produk == id_produk,
+        extract('year', models.Data.periode) == year,
+        extract('month', models.Data.periode) >= start_month,
+        extract('month', models.Data.periode) <= end_month
+    ).group_by('bulan').order_by('bulan').all()
+    
+    return [{"bulan": int(r.bulan), "suka": int(r.suka or 0), "keranjang": int(r.keranjang or 0), "diklik": int(r.diklik or 0), "dilihat": int(r.dilihat or 0)} for r in res]
+
 @router.get("/{id_data}", response_model=schemas.Data)
 def get_data(
     id_data: int,

@@ -27,6 +27,22 @@ def list_pesan(
 ):
     return crud.pesan.get_multi(db)
 
+from sqlalchemy import func, extract
+
+@router.get("/chart/data")
+def get_pesan_chart_data(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+    res = db.query(
+        extract('month', models.Pesan.periode).label('bulan'), 
+        func.sum(models.Pesan.dibuat).label("dibuat"), 
+        func.sum(models.Pesan.dikirim).label("dikirim")
+    ).filter(
+        extract('year', models.Pesan.periode) == year,
+        extract('month', models.Pesan.periode) >= start_month,
+        extract('month', models.Pesan.periode) <= end_month
+    ).group_by('bulan').order_by('bulan').all()
+    
+    return [{"bulan": int(r.bulan), "dibuat": int(r.dibuat or 0), "dikirim": int(r.dikirim or 0)} for r in res]
+
 @router.get("/{id_pesan}", response_model=schemas.Pesan)
 def get_pesan(
     id_pesan: int,

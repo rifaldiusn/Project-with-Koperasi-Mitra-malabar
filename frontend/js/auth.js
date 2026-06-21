@@ -35,14 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Mencoba hit API backend sungguhan
-                const response = await api.post('/akun/login', {
+                const response = await api.post('/auth/login', {
                     username: usernameInput,
                     password: passwordInput
                 });
 
-                if (response.token) {
-                    api.setToken(response.token);
-                    const role = response.role; 
+                if (response.access_token) {
+                    api.setToken(response.access_token);
+                    let role = 'admin'; // default or map
+                    if (response.role === 1) role = 'admin';
+                    else if (response.role === 2) role = 'leads';
+                    else if (response.role === 3) role = 'campaign';
+                    
                     localStorage.setItem('role', role);
                     localStorage.setItem('username', usernameInput);
                     

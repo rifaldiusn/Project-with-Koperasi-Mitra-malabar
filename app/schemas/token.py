@@ -23,7 +23,6 @@ class TokenResponse(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
-    role: int
 
 class RefreshRequest(BaseModel):
     refresh_token: str

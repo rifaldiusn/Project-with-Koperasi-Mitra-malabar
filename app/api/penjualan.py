@@ -27,6 +27,22 @@ def list_penjualan(
 ):
     return crud.penjualan.get_multi(db)
 
+from sqlalchemy import func, extract
+
+@router.get("/chart/data")
+def get_penjualan_chart_data(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+    # ponytail: ultra minimal group by month with range
+    res = db.query(
+        extract('month', models.Penjualan.periode).label('bulan'),
+        func.sum(models.Penjualan.nominal).label('total_nominal')
+    ).filter(
+        extract('year', models.Penjualan.periode) == year,
+        extract('month', models.Penjualan.periode) >= start_month,
+        extract('month', models.Penjualan.periode) <= end_month
+    ).group_by('bulan').order_by('bulan').all()
+    
+    return [{"bulan": int(r.bulan), "total_nominal": int(r.total_nominal or 0)} for r in res]
+
 @router.get("/{id_penjualan}", response_model=schemas.Penjualan)
 def get_penjualan(
     id_penjualan: int,

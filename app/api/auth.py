@@ -22,11 +22,6 @@ def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
         )
-    if akun.role != payload.role:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid role",
-        )
     
     access_token = create_access_token(subject=str(akun.id_akun))
 

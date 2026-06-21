@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.services.deps import get_db, require_marketing, require_super_admin
 from app.services import crud
-from app import schemas
+from app import models, schemas
 
 router = APIRouter()
 
@@ -23,6 +23,22 @@ def list_campaign(
     _user=Depends(require_marketing),
 ):
     return crud.campaign.get_multi(db)
+
+from sqlalchemy import func, extract
+
+@router.get("/chart/data")
+def get_campaign_chart_data(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+    # ponytail: ultra minimal count by month
+    res = db.query(
+        extract('month', models.Campaign.tanggal).label('bulan'),
+        func.count(models.Campaign.id_campaign).label("total_campaign")
+    ).filter(
+        extract('year', models.Campaign.tanggal) == year,
+        extract('month', models.Campaign.tanggal) >= start_month,
+        extract('month', models.Campaign.tanggal) <= end_month
+    ).group_by('bulan').order_by('bulan').all()
+    
+    return [{"bulan": int(r.bulan), "total_campaign": int(r.total_campaign or 0)} for r in res]
 
 @router.get("/{id_campaign}", response_model=schemas.Campaign)
 def get_campaign(
