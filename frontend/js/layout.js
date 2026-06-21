@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="ph ph-user" style="margin-right:0.5rem;"></i> Profil Saya
                         </a>
                         ${userRole === 'admin' ? `<a href="${baseHref}kelola-akun.html" class="settings-item">
-                            <i class="ph ph-users-gear" style="margin-right:0.5rem;"></i> Kelola Akun
+                            <i class="ph ph-user-gear" style="margin-right:0.5rem;"></i> Kelola Akun
                         </a>` : ''}
                         <button class="settings-item settings-item-danger" id="settings-logout">
                             <i class="ph ph-sign-out" style="margin-right:0.5rem;"></i> Logout

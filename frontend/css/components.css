@@ -19,7 +19,7 @@
     background-color: var(--white);
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    overflow: hidden;
+    overflow: visible;
     margin-bottom: 1rem;
 }
 .data-table {
@@ -139,12 +139,29 @@
     overflow: hidden;
 }
 .dropdown-menu.active { display: block; }
+
+/* If the dropdown is in the last 2 rows of a table, open upwards to avoid being cut off */
+tbody tr:nth-last-child(-n+2) .dropdown-menu {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
 .dropdown-item {
+    box-sizing: border-box;
     padding: 0.75rem 1rem;
     display: block;
+    width: 100%;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    appearance: none;
     text-decoration: none;
     color: var(--text-main);
     font-size: 0.875rem;
+    font-family: inherit;
     cursor: pointer;
     transition: background-color 0.2s;
 }

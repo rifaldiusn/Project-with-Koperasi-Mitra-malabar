@@ -75,16 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="card-meta-label">Budget</span>
                         <span class="card-meta-value">Rp ${parseInt(camp.budget).toLocaleString('id-ID')}</span>
                     </div>
-                    <div class="card-actions">
+                    <div class="card-actions" style="position: relative;">
                         <a href="campaign-detail.html?id=${camp.id_campaign}" class="btn-icon" title="Lihat Detail">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </a>
-                        <button class="btn-icon btn-edit" data-id="${camp.id_campaign}" title="Edit">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                        </button>
-                        <button class="btn-icon btn-delete" data-id="${camp.id_campaign}" title="Hapus">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        </button>
+                        <div class="dropdown-wrapper" style="display: inline-block;">
+                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-campaign-${camp.id_campaign}">
+                                <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-campaign-${camp.id_campaign}">
+                                <button class="dropdown-item btn-edit" data-id="${camp.id_campaign}">
+                                    <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
+                                </button>
+                                <button class="dropdown-item danger btn-delete" data-id="${camp.id_campaign}">
+                                    <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
