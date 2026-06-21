@@ -32,14 +32,14 @@ def get_drive_service():
 
     return build('drive', 'v3', credentials=creds)
 
-def save_and_create_file(db: Session, file: UploadFile) -> models.File:
+def save_and_create_file(db: Session, file: UploadFile, folder_id: str = None) -> models.File:
     service = get_drive_service()
     
     file_metadata = {'name': file.filename}
 
-    folder_id = os.getenv("GDRIVE_FOLDER_ID")
-    if folder_id:
-        file_metadata['parents'] = [folder_id]
+    target_folder_id = folder_id or os.getenv("GDRIVE_FOLDER_ID")
+    if target_folder_id:
+        file_metadata['parents'] = [target_folder_id]
     
     media = MediaIoBaseUpload(file.file, mimetype=file.content_type, resumable=True)
     

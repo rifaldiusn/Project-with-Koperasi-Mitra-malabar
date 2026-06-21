@@ -16,9 +16,14 @@ class Token(TokenBase):
 
 class TokenResponse(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str = "bearer"
+    role: int
 
 class LoginRequest(BaseModel):
     username: str
     password: str
-    role: int 
+    role: int
+
+class RefreshRequest(BaseModel):
+    refresh_token: str

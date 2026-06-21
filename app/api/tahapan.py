@@ -13,17 +13,14 @@ def create_tahapan(
     db: Session = Depends(get_db),
     _user=Depends(require_sales),
 ):
-    # Verify Akun exists for the provided username
     akun = db.query(models.Akun).filter(models.Akun.username == payload.username).first()
     if not akun:
         raise HTTPException(status_code=404, detail="Akun with the specified username not found")
-
-    # Verify Campaign exists for the provided id_campaign
+    
     campaign = crud.campaign.get(db, id=payload.id_campaign)
     if not campaign:
         raise HTTPException(status_code=404, detail="Campaign not found")
 
-    # Prepare data for insertion
     data = payload.model_dump(exclude={"username"})
     data["id_akun"] = akun.id_akun
 
@@ -60,7 +57,6 @@ def update_tahapan(
 
     update_data = payload.model_dump(exclude_unset=True)
 
-    # If username is provided, resolve and update id_akun
     if "username" in update_data:
         username = update_data.pop("username")
         if username is not None:
@@ -71,7 +67,6 @@ def update_tahapan(
         else:
             update_data["id_akun"] = None
 
-    # If id_campaign is provided, verify it exists
     if "id_campaign" in update_data and update_data["id_campaign"] is not None:
         campaign = crud.campaign.get(db, id=update_data["id_campaign"])
         if not campaign:

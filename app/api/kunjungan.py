@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.orm import Session
 from typing import Optional
+import os
 
 from app.services.deps import get_db, require_sales
 from app.services import crud
@@ -20,15 +21,13 @@ def create_kunjungan(
     db: Session = Depends(get_db),
     _user=Depends(require_sales),
 ):
-    # Verify customer exists
     customer = crud.customer.get(db, id=id_customer)
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
 
-    # Save physical file securely and create File record
-    db_file = save_and_create_file(db, file)
+    folder_id = os.getenv("GDRIVE_FOLDER_ID_KUNJUNGAN")
+    db_file = save_and_create_file(db, file, folder_id)
 
-    # Create Kunjungan record linked to File
     kunjungan_in = schemas.KunjunganCreate(
         nama=nama,
         catatan=catatan,
@@ -92,8 +91,8 @@ def update_kunjungan(
 
     old_file_id = None
     if file is not None:
-        # Save physical file securely and create File record
-        db_file = save_and_create_file(db, file)
+        folder_id = os.getenv("GDRIVE_FOLDER_ID_KUNJUNGAN")
+        db_file = save_and_create_file(db, file, folder_id)
         
         old_file_id = kunjungan.id_file
         update_data["id_file"] = db_file.id_file
