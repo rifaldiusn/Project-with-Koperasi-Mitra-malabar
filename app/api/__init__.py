@@ -13,6 +13,7 @@ from app.api.variasi import router as variasi_router
 from app.api.penjualan import router as penjualan_router
 from app.api.data import router as data_router
 from app.api.pesan import router as pesan_router
+from app.api.log import router as log_router
 
 __all__ = [
     "akun_router", 
@@ -29,5 +30,6 @@ __all__ = [
     "variasi_router",
     "penjualan_router",
     "data_router",
-    "pesan_router"
+    "pesan_router",
+    "log_router"
     ]

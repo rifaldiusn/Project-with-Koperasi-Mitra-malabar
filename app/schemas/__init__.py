@@ -17,6 +17,7 @@ from .tahapan import Tahapan, TahapanBase, TahapanCreate, TahapanUpdate
 from .kpi import KPI, KPIBase, KPICreate, KPIUpdate
 from .brief import Brief, BriefBase, BriefCreate, BriefUpdate
 from .dealing import Dealing, DealingBase, DealingCreate, DealingUpdate
+from .log import Log
 
 __all__ = [
     "Akun", "AkunBase", "AkunCreate", "AkunCreateRequest", "AkunUpdate",
@@ -35,5 +36,6 @@ __all__ = [
     "Tahapan", "TahapanBase", "TahapanCreate", "TahapanUpdate",
     "KPI", "KPIBase", "KPICreate", "KPIUpdate",
     "Brief", "BriefBase", "BriefCreate", "BriefUpdate",
-    "Dealing", "DealingBase", "DealingCreate", "DealingUpdate"
+    "Dealing", "DealingBase", "DealingCreate", "DealingUpdate",
+    "Log"
 ]
