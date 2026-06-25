@@ -1,38 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('kunjungan-table-body');
     const searchInput = document.getElementById('search-kunjungan');
+    const dateStartInput = document.getElementById('date-start');
+    const dateEndInput = document.getElementById('date-end');
     
-    // Data dummy sesuai desain
-    let kunjunganData = [
-        { id: 1, nama: "Kunjungan ke Toko A", tgl: "20 Juni 2026", tujuan: "Presentasi Produk Baru" },
-        { id: 2, nama: "Kunjungan ke Budi Ahmad", tgl: "12 Okt 2023, 09:00", tujuan: "Penawaran Kredit" },
-        { id: 3, nama: "Kunjungan ke Siti Wijaya", tgl: "15 Okt 2023, 14:30", tujuan: "Survei Lokasi" }
-    ];
+    let debounceTimer;
+
+    const fetchKunjungan = async () => {
+        try {
+            const q = searchInput ? searchInput.value.trim() : '';
+            const start = dateStartInput ? dateStartInput.value : '';
+            const end = dateEndInput ? dateEndInput.value : '';
+            
+            let queryUrl = '/kunjungan/search?';
+            const params = new URLSearchParams();
+            if (q) params.append('q', q);
+            if (start) params.append('start_date', start);
+            if (end) params.append('end_date', end);
+            
+            const data = await api.get(queryUrl + params.toString());
+            renderTable(data);
+        } catch (error) {
+            console.error("Gagal memuat data kunjungan", error);
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:red;">Gagal memuat data dari server</td></tr>';
+            }
+        }
+    };
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '-';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
 
     const renderTable = (data) => {
         if (!tableBody) return;
         tableBody.innerHTML = '';
-        if (data.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#777;">Data tidak ditemukan</td></tr>';
+        if (!data || data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:#777;">Data tidak ditemukan</td></tr>';
             return;
         }
         data.forEach((k, i) => {
+            const customerName = k.customer ? k.customer.nama : '-';
+            const tujuan = k.catatan || '-';
+            const tanggal = formatDate(k.tanggal);
+
             tableBody.innerHTML += `
                 <tr>
                     <td>${i+1}</td>
                     <td style="font-weight:600;">${k.nama}</td>
-                    <td style="color:#555;">${k.tgl}</td>
-                    <td style="color:#555;">${k.tujuan}</td>
+                    <td style="color:#555;">${customerName}</td>
+                    <td style="color:#555;">${tanggal}</td>
+                    <td style="color:#555;">${tujuan}</td>
                     <td style="text-align:right;">
                         <div class="dropdown-wrapper">
-                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-kunjungan-${k.id}">
+                            <button class="dropdown-toggle" data-dropdown-target="dropdown-kunjungan-${k.id_kunjungan}">
                                 <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
                             </button>
-                            <div class="dropdown-menu" id="dropdown-kunjungan-${k.id}">
-                                <a href="edit-kunjungan.html?id=${k.id}" class="dropdown-item">
+                            <div class="dropdown-menu" id="dropdown-kunjungan-${k.id_kunjungan}">
+                                <a href="detail-kunjungan.html?id=${k.id_kunjungan}" class="dropdown-item">
+                                    <i class="ph ph-eye" style="margin-right: 0.5rem;"></i>Lihat Detail
+                                </a>
+                                <a href="edit-kunjungan.html?id=${k.id_kunjungan}" class="dropdown-item">
                                     <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
                                 </a>
-                                <button class="dropdown-item danger btn-delete-kunjungan" data-id="${k.id}" data-nama="${k.nama}">
+                                <button class="dropdown-item danger btn-delete-kunjungan" data-id="${k.id_kunjungan}" data-nama="${k.nama}">
                                     <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
                                 </button>
                             </div>
@@ -42,32 +75,35 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
 
-        // Re-initialize dropdown toggles for newly rendered rows
-
-
         // Attach delete handlers
         tableBody.querySelectorAll('.btn-delete-kunjungan').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 const id = parseInt(btn.dataset.id);
                 const nama = btn.dataset.nama;
                 if (confirm(`Yakin ingin menghapus "${nama}"?`)) {
-                    kunjunganData = kunjunganData.filter(k => k.id !== id);
-                    renderTable(kunjunganData);
-                    showToast(`Kunjungan "${nama}" berhasil dihapus`, 'success');
-                    addNotification(`Kunjungan "${nama}" telah dihapus`);
+                    try {
+                        await api.delete(`/kunjungan/${id}`);
+                        showToast(`Kunjungan "${nama}" berhasil dihapus`, 'success');
+                        fetchKunjungan();
+                    } catch (error) {
+                        showToast(`Gagal menghapus kunjungan`, 'error');
+                    }
                 }
             });
         });
     };
 
-    // Search
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            const keyword = searchInput.value.toLowerCase();
-            const filtered = kunjunganData.filter(k => k.nama.toLowerCase().includes(keyword));
-            renderTable(filtered);
-        });
-    }
+    const handleFilterChange = () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchKunjungan();
+        }, 500);
+    };
 
-    renderTable(kunjunganData);
+    if (searchInput) searchInput.addEventListener('input', handleFilterChange);
+    if (dateStartInput) dateStartInput.addEventListener('change', handleFilterChange);
+    if (dateEndInput) dateEndInput.addEventListener('change', handleFilterChange);
+
+    // Initial load
+    fetchKunjungan();
 });

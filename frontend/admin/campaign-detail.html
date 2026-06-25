@@ -12,36 +12,14 @@
 </head>
 <body>
     <div class="app-container">
-        <aside class="sidebar">
-            <div class="sidebar-header"><div class="sidebar-logo-text">Mitra Malabar</div></div>
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="menu-item">Dashboard</a>
-                <a href="customer.html" class="menu-item">Customer</a>
-                <a href="kunjungan.html" class="menu-item">Kunjungan</a>
-                <a href="campaign.html" class="menu-item active">Campaign</a>
-                <a href="produk.html" class="menu-item">Produk</a>
-                <a href="riwayat.html" class="menu-item">Riwayat</a>
-            </nav>
-        </aside>
-
         <main class="main-content">
-            <header class="top-bar">
-                <div class="topbar-left-text">Detail Campaign</div>
-                <div class="search-wrapper">
-                    <span style="color:#888; font-size:0.875rem; font-weight:600; margin-right:0.5rem;">CARI:</span>
-                    <input type="text" placeholder="Data campaign...">
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <div class="breadcrumb">Campaigns <span class="text-separator">/</span> <strong id="cd-breadcrumb">-</strong></div>
                 </div>
-                <div class="user-profile" style="gap: 1.5rem;">
-                    <button class="btn-text-action" style="color:var(--text-main);">Notifikasi</button>
-                    <a href="profil.html"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" class="avatar"></a>
-                </div>
-            </header>
-
-            <div class="detail-top-header">
-                <div class="breadcrumb">Campaigns <span class="text-separator">/</span> <strong>Panen Raya Malabar 2024</strong></div>
                 <div class="detail-actions">
-                    <span class="badge-status badge-active-theme">Status: Active</span>
-                    <button class="btn btn-primary btn-theme-dark" onclick="openModal('modal-edit-campaign')">
+                    <button class="btn btn-primary" data-modal-target="modal-edit-campaign">
+                        <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>
                         Edit Campaign
                     </button>
                 </div>
@@ -53,20 +31,15 @@
                         <div class="card-title-icon">DATA CAMPAIGN</div>
                     </div>
                     <div class="info-grid-meta">
-                        <div><p class="label-xs text-muted">TANGGAL MULAI</p><p class="val-bold">15 Mar 2024</p></div>
-                        <div><p class="label-xs text-muted">DEADLINE</p><p class="val-bold">30 Jun 2024</p></div>
-                        <div><p class="label-xs text-muted">BUDGET TOTAL</p><p class="val-bold text-theme-green">Rp 45.000.000</p></div>
+                        <div><p class="label-xs text-muted">TANGGAL MULAI</p><p class="val-bold" id="cd-start">Memuat...</p></div>
+                        <div><p class="label-xs text-muted">DEADLINE</p><p class="val-bold" id="cd-end">Memuat...</p></div>
+                        <div><p class="label-xs text-muted">BUDGET TOTAL</p><p class="val-bold text-theme-green" id="cd-budget">Memuat...</p></div>
                     </div>
                     <div class="progress-block">
                         <div class="progress-box">
                             <p class="label-xs text-muted">Sisa Waktu</p>
-                            <div class="progress-bar"><div class="progress-fill fill-dark-gray"></div></div>
-                            <p class="val-bold label-xs">74 Hari lagi</p>
-                        </div>
-                        <div class="progress-box">
-                            <p class="label-xs text-muted">Penggunaan Budget</p>
-                            <div class="progress-bar"><div class="progress-fill fill-theme-green"></div></div>
-                            <p class="val-bold label-xs">Rp 18.250.000 terpakai</p>
+                            <div class="progress-bar"><div class="progress-fill fill-dark-gray" id="cd-sisa-bar" style="width:0%"></div></div>
+                            <p class="val-bold label-xs" id="cd-sisa-hari">-</p>
                         </div>
                     </div>
                 </div>
@@ -74,28 +47,25 @@
                 <div class="detail-card">
                     <div class="detail-card-header">
                         <div class="card-title-icon">KPI METRICS</div>
-                        <button class="btn btn-outline btn-sm" onclick="openModal('modal-edit-kpi')">
-                            Ubah KPI
+                        <button class="btn btn-outline" id="btn-tambah-kpi" data-modal-target="modal-edit-kpi">
+                            + Tambah KPI
                         </button>
                     </div>
-                    <p class="label-xs text-muted mb-xs">Nama Program Target</p>
-                    <p class="val-bold padding-bottom-sm">Promotion Savings "Malabar Gold"</p>
-                    
-                    <div class="kpi-target-box">
-                        <p class="label-xs val-bold margin-bottom-xs">Target Keberhasilan:</p>
-                        <ul class="check-list" style="list-style-type: disc; padding-left: 1.25rem;">
-                            <li>500 Pendaftaran Anggota Baru</li>
-                            <li>Rp 2.5 Miliar Pertumbuhan Deposit</li>
-                            <li>15% Konversi dari Sosial Media</li>
-                        </ul>
-                    </div>
+                    <p class="label-xs text-muted mb-xs">Nama Campaign</p>
+                    <p class="val-bold padding-bottom-sm" id="cd-title">Memuat...</p>
+                    <p class="label-xs text-muted mb-xs">Keterangan</p>
+                    <p id="cd-desc" style="font-size:0.875rem;">Memuat...</p>
+
+                    <ul class="check-list" id="kpi-body" style="padding-left:1rem;margin-top:1rem;">
+                        <li style="color:var(--text-muted);">Memuat...</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="detail-card spacing-bottom-md">
                 <div class="detail-card-header">
                     <div class="card-title-icon">CAMPAIGN BRIEF</div>
-                    <button class="btn btn-outline btn-sm" onclick="openModal('modal-edit-brief')">
+                    <button class="btn btn-outline" data-modal-target="modal-edit-brief">
                         + Tambah Brief
                     </button>
                 </div>
@@ -103,9 +73,8 @@
                     <thead>
                         <tr><th class="table-w-brief">Poin Mandatory</th><th>Detail Pesan</th></tr>
                     </thead>
-                    <tbody>
-                        <tr><td class="val-bold">Ambience</td><td>Suasana roastery dekat ke rumah.</td></tr>
-                        <tr><td class="val-bold">Process Awareness</td><td>Menunjukkan value kopi asli dan legalitas roastery di bawah koperasi Mitra Malabar yang sudah beroperasi lebih dari 10 tahun.</td></tr>
+                    <tbody id="brief-body">
+                        <tr><td colspan="2" style="text-align:center;color:var(--text-muted);padding:1rem;">Memuat...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -113,24 +82,14 @@
             <div class="detail-card">
                 <div class="detail-card-header">
                     <div class="card-title-icon">KOL PARTNERS</div>
-                    <button class="btn btn-outline btn-sm">+ Tambah KOL</button>
+                    <button class="btn btn-outline" data-modal-target="modal-add-kol">+ Tambah KOL</button>
                 </div>
                 <table class="data-table">
                     <thead>
-                        <tr><th>NAMA IG</th><th>KATEGORI</th><th>KODE VOUCHER</th><th>RATE FEE</th><th>AKSI</th></tr>
+                        <tr><th>NAMA IG</th><th>KATEGORI</th><th>RATE FEE</th><th>AKSI</th></tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="flex-align-center">
-                                    <span class="val-bold">Sasha Kamila</span>
-                                </div>
-                            </td>
-                            <td>Lifestyle & Finance</td>
-                            <td><span class="font-monospace">MALABAR24</span></td>
-                            <td class="val-bold text-theme-green">Rp 12.000.000</td>
-                            <td><button class="btn btn-outline btn-sm">Lihat Bukti</button></td>
-                        </tr>
+                    <tbody id="kol-body">
+                        <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:1rem;">Memuat...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -138,113 +97,114 @@
     </div>
 
     <div class="modal-overlay" id="modal-edit-campaign">
-        <div class="modal-content modal-md">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Edit Campaign</h3>
-                <button class="btn-text-action" style="color:var(--text-muted); font-size:1.25rem;" onclick="closeModal('modal-edit-campaign')">X</button>
+                <button class="modal-close" data-modal-close>&times;</button>
             </div>
             <div class="form-group">
                 <label class="form-label">Nama Campaign</label>
-                <input type="text" class="form-control" value="Panen Raya Malabar 2024">
+                <input type="text" id="edit-nama" class="form-control">
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Tanggal Mulai</label>
-                    <input type="date" class="form-control" value="2024-03-15">
+                    <input type="date" id="edit-tanggal" class="form-control">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tenggat Waktu</label>
-                    <input type="date" class="form-control" value="2024-06-30">
+                    <input type="date" id="edit-batas" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Total Budget (Rp)</label>
-                <input type="number" class="form-control" value="45000000">
+                <input type="number" id="edit-budget" class="form-control">
             </div>
             <div class="form-group">
-                <label class="form-label">Status</label>
-                <select class="form-control">
-                    <option selected>Active</option>
-                    <option>Draft</option>
-                    <option>Completed</option>
-                </select>
+                <label class="form-label">Keterangan</label>
+                <textarea id="edit-keterangan" class="form-control" rows="3"></textarea>
             </div>
-            <div class="form-actions-modal">
-                <button class="btn btn-outline btn-borderless" onclick="closeModal('modal-edit-campaign')">Batal</button>
-                <button class="btn btn-primary btn-theme-dark" onclick="closeModal('modal-edit-campaign')">Simpan Perubahan</button>
+            <p id="edit-error" style="color:red;display:none;font-size:0.875rem;"></p>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-outline" data-modal-close>Batal</button>
+                <button class="btn btn-primary" id="btn-simpan-edit">Simpan Perubahan</button>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="modal-edit-kpi">
-        <div class="modal-content modal-lg">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Edit Metrik KPI</h3>
-                <button class="btn-text-action" style="color:var(--text-muted); font-size:1.25rem;" onclick="closeModal('modal-edit-kpi')">X</button>
+                <h3 class="modal-title">Tambah KPI</h3>
+                <button class="modal-close" data-modal-close>&times;</button>
             </div>
-            <p class="label-xs text-muted spacing-bottom-sm">Sesuaikan target dan pantau progress kampanye saat ini.</p>
             <div class="form-group">
-                <label class="form-label">Nama Kampanye</label>
-                <input type="text" class="form-control" value="Q3 Savings Drive 2024">
+                <label class="form-label">Nama KPI</label>
+                <input type="text" id="kpi-nama" class="form-control" placeholder="Contoh: 500 Pendaftar Baru">
             </div>
-            
-            <div class="kpi-editor-section">
-                <div class="editor-sub-header">
-                    <p class="val-bold">Target Keberhasilan</p>
-                    <button type="button" class="btn-text-action">+ Tambah Metrik</button>
-                </div>
-                
-                <div class="kpi-edit-item-box">
-                    <div class="item-box-title-row">
-                        <span class="val-bold text-sm">Pendaftaran Anggota Baru</span> 
-                        <button class="btn-text-action" style="color:var(--danger);">Hapus</button>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="label-xs">Target Angka</label>
-                            <input type="number" class="form-control" value="500">
-                        </div>
-                        <div class="form-group">
-                            <label class="label-xs">Pencapaian Saat Ini</label>
-                            <input type="number" class="form-control" value="320">
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Deskripsi</label>
+                <input type="text" id="kpi-deskripsi" class="form-control" placeholder="Contoh: Target jumlah anggota baru">
             </div>
-            <div class="form-actions-modal">
-                <button class="btn btn-outline btn-borderless" onclick="closeModal('modal-edit-kpi')">Batal</button>
-                <button class="btn btn-primary btn-theme-green" onclick="closeModal('modal-edit-kpi')">Simpan Perubahan</button>
+            <p id="kpi-error" style="color:red;display:none;font-size:0.875rem;"></p>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-outline" data-modal-close>Batal</button>
+                <button class="btn btn-primary" id="btn-simpan-kpi">Simpan KPI</button>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="modal-edit-brief">
-        <div class="modal-content modal-md">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Tambah Campaign Brief</h3>
-                <button class="btn-text-action" style="color:var(--text-muted); font-size:1.25rem;" onclick="closeModal('modal-edit-brief')">X</button>
+                <button class="modal-close" data-modal-close>&times;</button>
             </div>
             <div class="form-group">
                 <label class="form-label">Poin Mandatory</label>
-                <select class="form-control">
-                    <option selected>Pilih poin mandatory...</option>
-                    <option>Call to Action (CTA)</option>
-                    <option>Tagging</option>
-                    <option>Ambience</option>
-                </select>
+                <input type="text" id="brief-poin" class="form-control" placeholder="Contoh: Ambience, Tagging, CTA...">
             </div>
             <div class="form-group">
                 <label class="form-label">Detail Pesan</label>
-                <textarea class="form-control" rows="4" placeholder="Masukkan detail brief yang harus diperhatikan..."></textarea>
+                <textarea id="brief-detail" class="form-control" rows="4" placeholder="Masukkan detail brief yang harus diperhatikan..."></textarea>
             </div>
-            <div class="form-actions-modal">
-                <button class="btn btn-outline btn-borderless" onclick="closeModal('modal-edit-brief')">Batal</button>
-                <button class="btn btn-primary btn-theme-dark" onclick="closeModal('modal-edit-brief')">Simpan Brief</button>
+            <p id="brief-error" style="color:red;display:none;font-size:0.875rem;"></p>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-outline" data-modal-close>Batal</button>
+                <button class="btn btn-primary" id="btn-simpan-brief">Simpan Brief</button>
             </div>
         </div>
     </div>
 
-    <script src="../js/admin-core.js"></script>
-    <script src="../js/admin-campaign-detail.js"></script>
+    <div class="modal-overlay" id="modal-add-kol">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah KOL Baru (Global)</h3>
+                <button class="modal-close" data-modal-close>&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nama KOL</label>
+                <input type="text" id="kol-nama" class="form-control" placeholder="Contoh: Sasha Kamila">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Kategori</label>
+                <input type="text" id="kol-kategori" class="form-control" placeholder="Contoh: Lifestyle & Finance">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Rate (Informasional)</label>
+                <input type="text" id="kol-rate" class="form-control" placeholder="Contoh: 12.000.000 / posting">
+            </div>
+            <p id="kol-error" style="color:red;display:none;font-size:0.875rem;"></p>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-outline" data-modal-close>Batal</button>
+                <button class="btn btn-primary" id="btn-simpan-kol">Simpan KOL</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js?v=3"></script>
+    <script src="../js/layout.js?v=3"></script>
+    <script src="../js/admin-core.js?v=3"></script>
+    <script src="../js/campaign-detail.js?v=3"></script>
 </body>
 </html>

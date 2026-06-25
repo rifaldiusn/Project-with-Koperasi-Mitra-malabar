@@ -1,145 +1,93 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('produk-table-body');
     const searchInput = document.getElementById('search-produk');
-    const btnExcel = document.getElementById('btn-input-excel');
-    const fileInput = document.getElementById('excel-file');
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
+    
+    let debounceTimer;
 
-    let produkData = [];
-
-    const isMock = api.getToken() === 'mock-token-12345';
-    let mockData = [
-        { id: 1, nama: "Kredit Usaha Tani", kode: "KUT-2023-01", status: "Active" },
-        { id: 2, nama: "Simpanan Sukarela", kode: "SS-2023-04", status: "Active" },
-        { id: 3, nama: "Pembiayaan Traktor", kode: "PT-2024-02", status: "Draft" },
-        { id: 4, nama: "Asuransi Gagal Panen", kode: "AGP-2023-11", status: "Inactive" }
-    ];
-
-    const loadProduk = async () => {
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>';
-        
+    const fetchProduk = async () => {
         try {
-            if (isMock) {
-                produkData = mockData;
-            } else {
-                const response = await api.get('/produk/get-all');
-                produkData = response.produk || [];
-            }
-            renderTable(produkData);
+            const q = searchInput ? searchInput.value.trim() : '';
+            
+            let queryUrl = '/produk/search?';
+            const params = new URLSearchParams();
+            if (q) params.append('q', q);
+            
+            const data = await api.get(queryUrl + params.toString());
+            renderTable(data);
         } catch (error) {
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = error.message || 'Gagal memuat data produk.';
-            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Gagal memuat data</td></tr>';
+            console.error("Gagal memuat data produk", error);
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:red;">Gagal memuat data dari server</td></tr>';
+            }
         }
     };
 
     const renderTable = (data) => {
-        tableBody.innerHTML = '';
-        if (data.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Data tidak ditemukan</td></tr>';
+        if (!tableBody) return;
+        let html = '';
+        if (!data || data.length === 0) {
+            html = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#777;">Data tidak ditemukan</td></tr>';
+            tableBody.innerHTML = html;
             return;
         }
-
-        data.forEach((prod, index) => {
-            let statusColor = '#E2E3E5';
-            let textColor = '#383D41';
-            if (prod.status === 'Active' || prod.status === 'active') {
-                statusColor = '#D4EDDA'; textColor = '#155724';
-            } else if (prod.status === 'Inactive' || prod.status === 'inactive') {
-                statusColor = '#F8D7DA'; textColor = '#721C24';
-            }
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td>
-                    <div style="font-weight:600;">${prod.nama}</div>
-                    <div style="font-size:0.75rem; color:var(--text-muted);">Product Category</div>
-                </td>
-                <td>${prod.kode}</td>
-                <td>
-                    <span style="background:${statusColor}; color:${textColor}; padding:4px 8px; border-radius:12px; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px;">
-                        <span style="width:6px; height:6px; border-radius:50%; background-color:${textColor};"></span>
-                        ${prod.status}
-                    </span>
-                </td>
-                <td style="text-align: right;">
-                    <div class="dropdown-wrapper">
-                        <button class="dropdown-toggle" data-dropdown-toggle="dropdown-produk-${prod.id}">
-                            <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-produk-${prod.id}">
-                            <a href="produk-detail.html?id=${prod.id}" class="dropdown-item">
-                                <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
-                            </a>
-                            <button class="dropdown-item danger">
-                                <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
+        data.forEach((p, idx) => {
+            const statusLabel = p.status || 'Active';
+            const statusClass = `status-${statusLabel.toLowerCase()}`;
+            html += `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td>
+                        <div class="val-bold">${p.nama}</div>
+                    </td>
+                    <td>${p.kode}</td>
+                    <td><span class="status-pill ${statusClass}">${statusLabel}</span></td>
+                    <td style="text-align: right;">
+                        <div class="dropdown-wrapper">
+                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-admin-produk-${p.id_produk}">
+                                <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
                             </button>
+                            <div class="dropdown-menu" id="dropdown-admin-produk-${p.id_produk}">
+                                <a href="edit-produk.html?id=${p.id_produk}" class="dropdown-item">
+                                    <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
+                                </a>
+                                <button class="dropdown-item danger btn-delete-produk" data-id="${p.id_produk}" data-nama="${p.nama}">
+                                    <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </td>
+                    </td>
+                </tr>
             `;
-            tableBody.appendChild(tr);
         });
+        tableBody.innerHTML = html;
 
-        document.getElementById('pagination-info').textContent = `Showing 1 to ${data.length} of ${data.length} entries`;
+        // Attach delete handlers
+        tableBody.querySelectorAll('.btn-delete-produk').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = parseInt(btn.dataset.id);
+                const nama = btn.dataset.nama;
+                if (confirm(`Yakin ingin menghapus produk "${nama}"?`)) {
+                    try {
+                        await api.delete(`/produk/${id}`);
+                        showToast(`Produk "${nama}" berhasil dihapus`, 'success');
+                        fetchProduk();
+                    } catch (error) {
+                        showToast(`Gagal menghapus produk`, 'error');
+                    }
+                }
+            });
+        });
     };
 
-    // Excel Upload Logic
-    btnExcel.addEventListener('click', () => {
-        fileInput.click();
-    });
+    const handleSearch = () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchProduk();
+        }, 500);
+    };
 
-    fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    if (searchInput) searchInput.addEventListener('input', handleSearch);
 
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
-
-        // Validation for .xlsx (from test plan)
-        if (!file.name.endsWith('.xlsx')) {
-            errorMessage.textContent = "extensi file tidak didukung";
-            errorMessage.style.display = 'block';
-            fileInput.value = '';
-            return;
-        }
-
-        try {
-            if (isMock) {
-                // Simulate upload success
-                setTimeout(() => {
-                    successMessage.textContent = "file berhasil diupload";
-                    successMessage.style.display = 'block';
-                    // clear message after 3 seconds
-                    setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
-                }, 500);
-            } else {
-                const formData = new FormData();
-                formData.append('file', file);
-                const response = await api.postFormData('/file/excel/add', formData);
-                successMessage.textContent = response.message || "file berhasil diupload";
-                successMessage.style.display = 'block';
-            }
-        } catch (error) {
-            errorMessage.textContent = error.data?.message || 'Gagal mengupload file.';
-            errorMessage.style.display = 'block';
-        } finally {
-            fileInput.value = ''; // Reset input
-        }
-    });
-
-    searchInput.addEventListener('input', () => {
-        const keyword = searchInput.value.toLowerCase();
-        const filteredData = produkData.filter(p => 
-            p.nama.toLowerCase().includes(keyword) || 
-            p.kode.toLowerCase().includes(keyword)
-        );
-        renderTable(filteredData);
-    });
-
-    loadProduk();
+    // Initial fetch
+    fetchProduk();
 });

@@ -6,6 +6,7 @@ class Campaign(Base):
     __tablename__ = "Campaign"
     
     id_campaign = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    nama = Column(String(255))
     tanggal = Column(Date)
     keterangan = Column(Text)
     budget = Column(Integer)

@@ -62,8 +62,10 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="detail-card-header" style="margin-top:2rem; border-bottom:none; padding-bottom:0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    </div> <!-- End of Informasi Dasar card -->
+
+                    <div class="detail-card"> <!-- Start of Variasi Produk card -->
+                        <div class="detail-card-header" style="border-bottom:none; padding-bottom:0.5rem; display: flex; justify-content: space-between; align-items: center;">
                             <div class="card-title-icon">
                                 <i class="ph ph-list-dashes" style="color:#6D8A21; font-size:1.25rem;"></i> Variasi Produk
                             </div>
@@ -80,22 +82,11 @@
                                 </tr>
                             </thead>
                             <tbody id="variasi-table-body">
-                                <tr>
-                                    <td><input type="text" class="form-control" value="Standar" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><input type="text" class="form-control" value="VAR-01" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><input type="number" class="form-control" value="50000" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><span class="status-pill status-active">Active</span></td>
-                                    <td><button type="button" class="btn-icon"><i class="ph ph-trash"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="Premium" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><input type="text" class="form-control" value="VAR-02" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><input type="number" class="form-control" value="75000" style="padding:0.4rem; border:none; background:transparent;"></td>
-                                    <td><span class="status-pill status-inactive">Inactive</span></td>
-                                    <td><button type="button" class="btn-icon"><i class="ph ph-trash"></i></button></td>
-                                </tr>
                             </tbody>
                         </table>
+                        <div style="margin-top: 1rem; text-align: right;">
+                            <button type="button" id="btn-simpan-variasi" class="btn btn-primary">Simpan Variasi</button>
+                        </div>
                     </div>
 
                     <div class="detail-card">
@@ -108,28 +99,32 @@
                                 <i class="ph ph-calendar-blank"></i> Periode data produk
                             </div>
                             <label class="form-label">Tanggal Produk</label>
-                            <input type="date" class="form-control" value="2023-01-10" style="max-width:300px;">
+                            <input type="date" class="form-control" id="metrik-periode" style="max-width:300px;">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Jumlah dilihat</label>
-                                <input type="number" class="form-control" value="1240">
+                                <input type="number" class="form-control" id="metrik-dilihat" placeholder="0">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Jumlah diklik</label>
-                                <input type="number" class="form-control" value="456">
+                                <input type="number" class="form-control" id="metrik-diklik" placeholder="0">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Jumlah suka</label>
-                                <input type="number" class="form-control" value="89">
+                                <input type="number" class="form-control" id="metrik-suka" placeholder="0">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Jumlah masukkan keranjang</label>
-                                <input type="number" class="form-control" value="34">
+                                <input type="number" class="form-control" id="metrik-keranjang" placeholder="0">
                             </div>
+                        </div>
+                        <div style="margin-top: 1rem; text-align: right;">
+                            <button type="button" id="btn-edit-metrik" class="btn btn-secondary" style="display:none; margin-right: 0.5rem;">Edit Metrik</button>
+                            <button type="button" id="btn-simpan-metrik" class="btn btn-primary">Simpan Metrik</button>
                         </div>
                     </div>
 
@@ -140,19 +135,24 @@
                         
                         <div class="form-group">
                             <label class="form-label">Periode produk dipesan</label>
-                            <input type="month" class="form-control" value="2024-03" style="max-width:300px;">
+                            <input type="date" class="form-control" id="pesan-periode" style="max-width:300px;">
                         </div>
 
                         <div class="card-title-icon" style="margin-bottom: 0.5rem; margin-top: 1rem; font-size:0.875rem;">
                             <i class="ph ph-factory"></i> Metrik Produksi
                         </div>
-                        <input type="number" class="form-control mb-4" value="1250" placeholder="Jumlah diproduksi">
+                        <input type="number" class="form-control mb-4" id="pesan-dibuat" placeholder="Jumlah diproduksi">
 
                         <div class="card-title-icon" style="margin-bottom: 0.5rem; margin-top: 1rem; font-size:0.875rem;">
                             <i class="ph ph-package"></i> Logistik Pengiriman
                         </div>
                         <label class="form-label">Jumlah produk dikirim (Unit)</label>
-                        <input type="number" class="form-control" value="850">
+                        <input type="number" class="form-control" id="pesan-dikirim" placeholder="0">
+                        
+                        <div style="margin-top: 1rem; text-align: right;">
+                            <button type="button" id="btn-edit-pesan" class="btn btn-secondary" style="display:none; margin-right: 0.5rem;">Edit Pesanan</button>
+                            <button type="button" id="btn-simpan-pesan" class="btn btn-primary">Simpan Pesanan</button>
+                        </div>
                     </div>
 
                     <div class="detail-card">
@@ -161,8 +161,15 @@
                         </div>
                         
                         <div class="form-group">
+                            <label class="form-label">Variasi Produk</label>
+                            <select class="form-control" id="jual-variasi">
+                                <option value="">Pilih Variasi...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label class="form-label">Periode data produk penjualan</label>
-                            <input type="month" class="form-control" value="2023-11">
+                            <input type="date" class="form-control" id="jual-periode">
                         </div>
 
                         <div class="form-row">
@@ -170,16 +177,21 @@
                                 <label class="form-label">Jumlah nominal penjualan</label>
                                 <div class="input-with-icon">
                                     <span style="position:absolute; left:12px; top:10px; color:#555; font-size:0.875rem;">Rp</span>
-                                    <input type="text" class="form-control" value="45.500.000" style="padding-left:35px;">
+                                    <input type="number" class="form-control" id="jual-nominal" placeholder="0" style="padding-left:35px;">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Jenis penjualan</label>
-                                <select class="form-control">
-                                    <option selected>Retail (Eceran)</option>
-                                    <option>Grosir</option>
+                                <select class="form-control" id="jual-jenis">
+                                    <option value="1">Retail (Eceran)</option>
+                                    <option value="2">Grosir</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div style="margin-top: 1rem; text-align: right;">
+                            <button type="button" id="btn-edit-jual" class="btn btn-secondary" style="display:none; margin-right: 0.5rem;">Edit Penjualan</button>
+                            <button type="button" id="btn-simpan-jual" class="btn btn-primary">Simpan Penjualan</button>
                         </div>
                     </div>
 
@@ -188,9 +200,9 @@
         </main>
     </div>
     
-    <script src="../js/api.js"></script>
-    <script src="../js/layout.js"></script>
-    <script src="../js/admin-core.js"></script>
-    <script src="../js/admin-form-produk.js"></script>
+    <script src="../js/api.js?v=4"></script>
+    <script src="../js/layout.js?v=4"></script>
+    <script src="../js/admin-core.js?v=4"></script>
+    <script src="../js/admin-form-produk.js?v=4"></script>
 </body>
 </html>

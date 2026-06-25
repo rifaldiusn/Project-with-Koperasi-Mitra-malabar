@@ -6,24 +6,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const akunId = urlParams.get('id');
 
-    // Jika Halaman Edit, muat data dummy
+    // Jika Halaman Edit, muat data
     if (akunId) {
-        // Simulasi Ambil Data dari API
-        const mockData = {
-            id: 1, 
-            nama: "Syafiq Gunawan", 
-            pass: "asikbanget", 
-            telp: "08555555444", 
-            username: "syafi22", 
-            role: "leads"
-        };
-
-        document.getElementById('input-id').value = mockData.id;
-        document.getElementById('input-nama').value = mockData.nama;
-        document.getElementById('input-password').value = mockData.pass;
-        document.getElementById('input-telp').value = mockData.telp;
-        document.getElementById('input-username').value = mockData.username;
-        document.getElementById('input-role').value = mockData.role;
+        try {
+            const data = await api.get(`/akun/${akunId}`);
+            
+            const roleMapRev = { 1: 'admin', 2: 'leads', 3: 'campaign' };
+            
+            const inputId = document.getElementById('input-id');
+            if (inputId) inputId.value = data.id_akun;
+            
+            document.getElementById('input-nama').value = data.nama || '';
+            document.getElementById('input-telp').value = data.telp || '';
+            document.getElementById('input-username').value = data.username || '';
+            document.getElementById('input-role').value = roleMapRev[data.role] || '';
+            
+            // Note: Password usually not sent back from server, leave placeholder
+            document.getElementById('input-password').placeholder = "Kosongkan jika tidak ingin mengubah password";
+            document.getElementById('input-password').required = false;
+        } catch (error) {
+            console.error(error);
+            showToast('Gagal memuat data akun untuk diedit', 'error');
+        }
     }
 
     // Fungsi Submit Form (Tambah / Edit)
@@ -36,13 +40,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             try {
-                // Simulasi delay request ke server
-                await new Promise(resolve => setTimeout(resolve, 600));
+                const roleMap = { "admin": 1, "leads": 2, "campaign": 3 };
+                const roleValue = document.getElementById('input-role').value;
                 
+                // ponytail: Minimal direct API mapping
+                const payload = {
+                    nama: document.getElementById('input-nama').value,
+                    telp: document.getElementById('input-telp').value,
+                    username: document.getElementById('input-username').value,
+                    role: roleMap[roleValue] || parseInt(roleValue)
+                };
+                
+                const pwdInput = document.getElementById('input-password').value;
+                if (pwdInput) {
+                    payload.password = pwdInput;
+                }
+
                 if (akunId) {
+                    await api.put(`/akun/${akunId}`, payload);
                     showToast('Data akun berhasil diperbarui!', 'success');
                     addNotification('Akun telah diperbarui');
                 } else {
+                    await api.post('/akun/', payload);
                     showToast('Akun baru berhasil ditambahkan!', 'success');
                     addNotification('Akun baru telah ditambahkan');
                 }
@@ -51,6 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 setTimeout(() => { window.location.href = 'kelola-akun.html'; }, 1000);
                 
             } catch (error) {
+                console.error(error);
                 showToast('Gagal menyimpan data akun.', 'error');
             } finally {
                 if (submitBtn) {

@@ -9,6 +9,9 @@ class TargetBase(BaseModel):
 class TargetCreate(TargetBase):
     pass
 
+class TargetUpdate(TargetBase):
+    pass
+
 class Target(TargetBase):
     id_target: int
 

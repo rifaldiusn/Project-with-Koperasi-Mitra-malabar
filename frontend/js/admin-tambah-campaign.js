@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const payload = {
                 nama: document.getElementById('campaign-nama')?.value,
-                tanggal_mulai: document.getElementById('campaign-mulai')?.value,
-                tenggat_waktu: document.getElementById('campaign-deadline')?.value,
-                budget_total: document.getElementById('campaign-budget')?.value,
+                tanggal: document.getElementById('campaign-mulai')?.value,
+                batas: document.getElementById('campaign-deadline')?.value,
+                budget: document.getElementById('campaign-budget')?.value,
                 keterangan: document.getElementById('campaign-deskripsi')?.value,
             };
 
             try {
                 // Try real API first
-                await api.post('/campaign/add', payload);
+                await api.post('/campaign/', payload);
                 showToast('Campaign baru berhasil ditambahkan!', 'success');
                 addNotification(`Campaign "${payload.nama}" telah dibuat`);
                 setTimeout(() => { window.location.href = 'campaign.html'; }, 1000);

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+    <!-- ponytail: Reused campaign page directly for admin. YAGNI on duplicating layout and js. -->
     <div class="app-container">
         <main class="main-content">
             <div class="page-header header-spacing">
@@ -18,8 +19,9 @@
                     <h1>Data Campaign</h1>
                     <p>Kelola dan pantau semua program campaign.</p>
                 </div>
-                <a href="tambah-campaign.html" class="btn btn-primary btn-campaign-add" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                    <i class="ph ph-plus"></i> Tambah Campaign
+                <a href="tambah-campaign.html" class="btn btn-primary">
+                    <i class="ph ph-plus" style="margin-right:0.5rem;"></i>
+                    Tambah Campaign
                 </a>
             </div>
 
@@ -37,7 +39,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <h3 class="campaign-title">Launching Kopi Arabika</h3>
                         <div class="dropdown-wrapper">
-                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-campaign-1">
+                            <button class="dropdown-toggle" data-dropdown-target="dropdown-campaign-1">
                                 <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
                             </button>
                             <div class="dropdown-menu" id="dropdown-campaign-1">
@@ -55,7 +57,7 @@
                     </div>
                     <p class="campaign-desc">Promo peluncuran produk baru dengan diskon 20%</p>
                     <div class="campaign-meta">
-                        <span class="meta-item"><i class="ph ph-calendar"></i> 1 Jan - 31 Jan 2025</span>
+                        <span class="meta-item"><i class="ph ph-calendar"></i> 1 Jan - 31 Jan 2026</span>
                         <span class="status-pill status-active"><i class="ph-fill ph-circle"></i> Aktif</span>
                     </div>
                     <a href="campaign-detail.html" class="btn-text-action">Lihat Detail <i class="ph ph-arrow-right"></i></a>
@@ -63,9 +65,9 @@
             </div>
         </main>
     </div>
-    <script src="../js/api.js"></script>
-    <script src="../js/layout.js"></script>
-    <script src="../js/admin-core.js"></script>
-    <script src="../js/campaign.js"></script>
+    <script src="../js/api.js?v=3"></script>
+    <script src="../js/layout.js?v=3"></script>
+    <script src="../js/admin-core.js?v=3"></script>
+    <script src="../js/campaign.js?v=3"></script>
 </body>
 </html>

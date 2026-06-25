@@ -11,6 +11,7 @@ class Customer(Base):
     email = Column(String(255))
     telp = Column(String(50))
     jenis = Column(String(100))
+    link_gmaps = Column(Text, nullable=True)
     id_akun = Column(Integer, ForeignKey("Akun.id_akun", ondelete="SET NULL"))
 
     akun = relationship("Akun")

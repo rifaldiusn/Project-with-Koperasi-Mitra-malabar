@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Kunjungan - Mitra Malabar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h1>Detail Kunjungan</h1>
+                    <p>Rincian detail informasi pertemuan kunjungan.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="kunjungan.html" class="btn btn-outline">Kembali</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-card-title">Detail Kunjungan</h2>
+                
+                    <div class="form-group">
+                        <label class="form-label">Nama Kunjungan</label>
+                        <input type="text" id="input-nama" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Customer</label>
+                        <input type="text" id="input-customer" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Catatan Kunjungan</label>
+                        <textarea id="input-catatan" class="form-control" rows="4" readonly></textarea>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <h3 class="section-title" style="font-size: 1rem; font-weight: 600; margin: 0;">Data Lokasi</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Latitude</label>
+                            <input type="text" id="input-lat" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Longitude</label>
+                            <input type="text" id="input-long" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <h3 class="form-card-title" style="margin-top: 2rem; margin-bottom: 1rem;">Dokumentasi</h3>
+                    <div class="form-group">
+                        <label class="form-label">Bukti Foto</label>
+                        <div id="image-container" style="margin-top: 0.5rem;">
+                            <img id="detail-image" src="" alt="Bukti Kunjungan" style="max-width: 100%; max-height: 400px; border-radius: 8px; display: none;">
+                            <p id="no-image-text" style="color: #666; font-style: italic; display: none;">Tidak ada bukti foto</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/api.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/admin-core.js"></script>
+    <script src="../js/detail-kunjungan.js"></script>
+</body>
+</html>

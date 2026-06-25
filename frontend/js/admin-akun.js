@@ -1,16 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('akun-table-body');
     const searchInput = document.getElementById('search-akun');
+    
+    let debounceTimer;
 
-    // Data Mockup Sesuai Screenshot Figma
-    let akunData = [
-        { id: 1, username: "syafi22", nama: "Syafiq Gunawan", telp: "08555555444", pass: "••••••••", role: "leads" },
-        { id: 2, username: "rashRtur", nama: "Syafiq Gunawan", telp: "08555555444", pass: "••••••••", role: "admin" },
-        { id: 3, username: "hhgg11", nama: "Syafiq Gunawan", telp: "08555555444", pass: "••••••••", role: "campaign" },
-        { id: 4, username: "u7ytt", nama: "Syafiq", telp: "08555555444", pass: "••••••••", role: "leads" }
-    ];
+    const roleMapRev = { 1: 'admin', 2: 'leads', 3: 'campaign' };
 
-    const getBadgeHTML = (role) => {
+    const getBadgeHTML = (roleInt) => {
+        const role = roleMapRev[roleInt] || 'admin';
         let badgeClass = '';
         let dotClass = 'dot-green';
         let roleName = '';
@@ -26,9 +23,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<span class="badge-role ${badgeClass}"><span class="dot ${dotClass}"></span> ${roleName}</span>`;
     };
 
+    const filterRole = document.getElementById('filter-role');
+
+    const fetchAkun = async () => {
+        try {
+            const q = searchInput ? searchInput.value.trim() : '';
+            const role = filterRole ? filterRole.value : '';
+            
+            let queryUrl = '/akun/search';
+            const params = new URLSearchParams();
+            if (q) params.append('q', q);
+            if (role) params.append('role', role);
+            
+            if (params.toString()) {
+                queryUrl += `?${params.toString()}`;
+            }
+            
+            const data = await api.get(queryUrl);
+            renderTable(data);
+        } catch (error) {
+            console.error("Gagal memuat data akun", error);
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:2rem; color:red;">Gagal memuat data dari server</td></tr>';
+            }
+        }
+    };
+
     const renderTable = (data) => {
+        if (!tableBody) return;
         tableBody.innerHTML = '';
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:2rem; color:#777;">Data tidak ditemukan</td></tr>';
             return;
         }
@@ -37,20 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                     <td>${index + 1}</td>
                     <td style="font-weight:600; color:#111;">${akun.username}</td>
-                    <td style="font-weight:500;">${akun.nama}</td>
-                    <td style="font-weight:600; color:#111;">${akun.telp}</td>
-                    <td style="color:#555;">${akun.pass}</td>
+                    <td style="font-weight:500;">${akun.nama || '-'}</td>
+                    <td style="font-weight:600; color:#111;">${akun.telp || '-'}</td>
+                    <td style="color:#555;">••••••••</td>
                     <td>${getBadgeHTML(akun.role)}</td>
                     <td style="text-align: right;">
                         <div class="dropdown-wrapper">
-                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-akun-${akun.id}">
+                            <button class="dropdown-toggle" data-dropdown-toggle="dropdown-akun-${akun.id_akun}">
                                 <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
                             </button>
-                            <div class="dropdown-menu" id="dropdown-akun-${akun.id}">
-                                <a href="edit-akun.html?id=${akun.id}" class="dropdown-item">
+                            <div class="dropdown-menu" id="dropdown-akun-${akun.id_akun}">
+                                <a href="edit-akun.html?id=${akun.id_akun}" class="dropdown-item">
                                     <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
                                 </a>
-                                <button class="dropdown-item danger btn-delete-akun" data-id="${akun.id}" data-username="${akun.username}">
+                                <button class="dropdown-item danger btn-delete-akun" data-id="${akun.id_akun}" data-username="${akun.username}">
                                     <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
                                 </button>
                             </div>
@@ -62,30 +86,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Attach delete handlers
         document.querySelectorAll('.btn-delete-akun').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 const id = parseInt(btn.dataset.id);
                 const username = btn.dataset.username;
                 if (confirm(`Yakin ingin menghapus akun "${username}"?`)) {
-                    akunData = akunData.filter(a => a.id !== id);
-                    renderTable(akunData);
-                    showToast(`Akun "${username}" berhasil dihapus`, 'success');
-                    addNotification(`Akun "${username}" telah dihapus`);
+                    try {
+                        await api.delete(`/akun/${id}`);
+                        showToast(`Akun "${username}" berhasil dihapus`, 'success');
+                        fetchAkun();
+                    } catch (error) {
+                        showToast(`Gagal menghapus akun`, 'error');
+                    }
                 }
             });
         });
     };
 
     // Filter Logic
+    const handleFilterChange = () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchAkun();
+        }, 500);
+    };
+
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const keyword = e.target.value.toLowerCase();
-            const filtered = akunData.filter(a => 
-                a.username.toLowerCase().includes(keyword) || 
-                a.nama.toLowerCase().includes(keyword)
-            );
-            renderTable(filtered);
-        });
+        searchInput.addEventListener('input', handleFilterChange);
+    }
+    if (filterRole) {
+        filterRole.addEventListener('change', handleFilterChange);
     }
 
-    renderTable(akunData);
+    // Initial load
+    fetchAkun();
 });

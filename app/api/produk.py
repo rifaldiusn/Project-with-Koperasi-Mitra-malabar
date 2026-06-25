@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_sales
+from app.services.deps import get_db, require_log_viewer
 from app.services import crud, excel_import
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_produk(
     payload: schemas.ProdukCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     existing = db.query(models.Produk).filter(models.Produk.kode == payload.kode).first()
     if existing:
@@ -22,15 +22,35 @@ def create_produk(
 @router.get("/", response_model=list[schemas.Produk])
 def list_produk(
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     return crud.produk.get_multi(db)
+
+from sqlalchemy import or_
+from typing import Optional
+
+@router.get("/search", response_model=list[schemas.Produk])
+def search_produk(
+    q: Optional[str] = None,
+    db: Session = Depends(get_db),
+    _user=Depends(require_log_viewer),
+):
+    query = db.query(models.Produk)
+    if q:
+        search_term = f"%{q}%"
+        query = query.filter(
+            or_(
+                models.Produk.nama.ilike(search_term),
+                models.Produk.kode.ilike(search_term)
+            )
+        )
+    return query.all()
 
 @router.get("/{id_produk}", response_model=schemas.Produk)
 def get_produk(
     id_produk: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     produk = crud.produk.get(db, id=id_produk)
     if not produk:
@@ -42,7 +62,7 @@ def update_produk(
     id_produk: int,
     payload: schemas.ProdukUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     produk = crud.produk.get(db, id=id_produk)
     if not produk:
@@ -59,7 +79,7 @@ def update_produk(
 def delete_produk(
     id_produk: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     produk = crud.produk.get(db, id=id_produk)
     if not produk:
@@ -71,7 +91,7 @@ def delete_produk(
 def import_excel(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     """
     Import data Produk dan Variasi dari file Excel.

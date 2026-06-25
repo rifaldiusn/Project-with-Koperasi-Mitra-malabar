@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
     if (!path.endsWith('index.html') && path !== '/' && path !== '/frontend/') {
         if (!api.getToken()) {
-            // Determine correct index.html path based on current directory
-            const depth = path.split('/').filter(p => p).length - (path.endsWith('/') ? 1 : 0);
-            const indexPath = '../'.repeat(Math.max(depth - 1, 0)) + 'index.html';
-            window.location.href = indexPath;
+            // Gunakan path absolut
+            let base = window.location.origin + window.location.pathname.replace(/\/(admin|campaign|leads)\/.*$/, '');
+            if (!base.endsWith('/')) base += '/';
+            window.location.href = base + 'index.html';
             return;
         }
     }
@@ -81,7 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Kelola Akun - only admin
     if (userRole === 'admin') {
         menuItems += `
-            <a href="${baseHref}kelola-akun.html" class="menu-item ${isActive('kelola-akun.html') || isActive('tambah-akun.html') || isActive('edit-akun.html') ? 'active' : ''}" style="margin-top: 2rem;">
+            <!-- ponytail: requested quick links -->
+            <a href="${baseHref}tambah-akun.html" class="menu-item ${isActive('tambah-akun.html') ? 'active' : ''}" style="margin-top: 2rem;">
+                <i class="ph ph-user-plus" style="font-size: 20px;"></i>
+                Tambah Akun
+            </a>
+            <a href="${baseHref}kelola-akun.html" class="menu-item ${isActive('kelola-akun.html') || isActive('edit-akun.html') ? 'active' : ''}">
                 <i class="ph ph-user-gear" style="font-size: 20px;"></i>
                 Kelola Akun
             </a>
@@ -110,10 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const topbarHTML = `
         <header class="top-bar">
-            <div class="search-wrapper">
-                <i class="ph ph-magnifying-glass" style="font-size: 18px; color: #888;"></i>
-                <input type="text" placeholder="Cari..." id="global-search-input">
-            </div>
             <div class="user-profile">
                 <div class="notif-wrapper" style="position:relative;">
                     <button class="btn-icon" id="btn-bell" title="Notifikasi">
@@ -264,62 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- GLOBAL SEARCH ---
-    const globalSearchInput = document.getElementById('global-search-input');
-    if (globalSearchInput) {
-        globalSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const query = globalSearchInput.value.trim().toLowerCase();
-                if (!query) return;
-
-                // Search through visible table rows on current page
-                const rows = document.querySelectorAll('.data-table tbody tr');
-                let matchCount = 0;
-                rows.forEach(row => {
-                    const text = row.textContent.toLowerCase();
-                    if (text.includes(query)) {
-                        row.style.display = '';
-                        row.style.backgroundColor = '#FFFDE7';
-                        matchCount++;
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-
-                // Also try searching campaign cards
-                const cards = document.querySelectorAll('.campaign-card');
-                cards.forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    if (text.includes(query)) {
-                        card.style.display = '';
-                        card.style.boxShadow = '0 0 0 2px var(--primary-color)';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                if (matchCount === 0 && cards.length === 0) {
-                    showToast(`Tidak ditemukan hasil untuk "${globalSearchInput.value}"`, 'error');
-                } else {
-                    showToast(`${matchCount || cards.length} hasil ditemukan`, 'success');
-                }
-            }
-        });
-
-        // Reset on clear
-        globalSearchInput.addEventListener('input', () => {
-            if (globalSearchInput.value === '') {
-                document.querySelectorAll('.data-table tbody tr').forEach(row => {
-                    row.style.display = '';
-                    row.style.backgroundColor = '';
-                });
-                document.querySelectorAll('.campaign-card').forEach(card => {
-                    card.style.display = '';
-                    card.style.boxShadow = '';
-                });
-            }
-        });
-    }
 
     // --- LOGOUT HANDLING ---
     const doLogout = async () => {

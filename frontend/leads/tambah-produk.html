@@ -56,134 +56,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="width:150px; display:flex; flex-direction:column; align-items:center;">
-                                <div class="image-upload-circle" style="background-image: url('https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=200&q=80');">
-                                    <div class="upload-overlay"><i class="ph ph-camera"></i></div>
-                                </div>
-                            </div>
                         </div>
-                        
-                        <div class="detail-card-header" style="margin-top:2rem; border-bottom:none; padding-bottom:0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                            <div class="card-title-icon">
-                                <i class="ph ph-list-dashes" style="color:#6D8A21; font-size:1.25rem;"></i> Variasi Produk
-                            </div>
-                            <button type="button" class="btn-text-action" id="btn-tambah-variasi">+ Tambah Variasi</button>
-                        </div>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>NAMA VARIASI</th>
-                                    <th>KODE VARIASI</th>
-                                    <th>HARGA (RP)</th>
-                                    <th>STATUS</th>
-                                    <th>AKSI</th>
-                                </tr>
-                            </thead>
-                            <tbody id="variasi-table-body">
-                                <tr>
-                                    <td>Standar</td>
-                                    <td>VAR-01</td>
-                                    <td>50.000</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
-                                    <td><button type="button" class="btn-icon"><i class="ph ph-trash"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="card-title-icon" style="margin-bottom: 1rem;">
-                            <i class="ph ph-trend-up" style="color:#6D8A21; font-size:1.25rem;"></i> Metrik Interaksi
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="card-title-icon" style="margin-bottom: 0.5rem; font-size:0.875rem;">
-                                <i class="ph ph-calendar-blank"></i> Periode data produk
-                            </div>
-                            <label class="form-label">Tanggal Produk</label>
-                            <input type="date" class="form-control" style="max-width:300px;">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Jumlah dilihat</label>
-                                <input type="number" class="form-control" placeholder="0">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Jumlah diklik</label>
-                                <input type="number" class="form-control" placeholder="0">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Jumlah suka</label>
-                                <input type="number" class="form-control" placeholder="0">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Jumlah masukkan keranjang</label>
-                                <input type="number" class="form-control" placeholder="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="card-title-icon" style="margin-bottom: 1rem;">
-                            <i class="ph ph-truck" style="color:#6D8A21; font-size:1.25rem;"></i> Pelacakan Pesanan
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Periode produk dipesan</label>
-                            <input type="month" class="form-control" style="max-width:300px;">
-                        </div>
-
-                        <div class="card-title-icon" style="margin-bottom: 0.5rem; margin-top: 1rem; font-size:0.875rem;">
-                            <i class="ph ph-factory"></i> Metrik Produksi
-                        </div>
-                        <input type="number" class="form-control mb-4" placeholder="Jumlah diproduksi">
-
-                        <div class="card-title-icon" style="margin-bottom: 0.5rem; margin-top: 1rem; font-size:0.875rem;">
-                            <i class="ph ph-package"></i> Logistik Pengiriman
-                        </div>
-                        <label class="form-label">Jumlah produk dikirim (Unit)</label>
-                        <input type="number" class="form-control" placeholder="0">
-                    </div>
-
-                    <div class="detail-card">
-                        <div class="card-title-icon" style="margin-bottom: 1rem;">
-                            <i class="ph ph-chart-bar" style="color:#6D8A21; font-size:1.25rem;"></i> Analisis Penjualan
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Periode data produk penjualan</label>
-                            <input type="month" class="form-control">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Jumlah nominal penjualan</label>
-                                <div class="input-with-icon">
-                                    <span style="position:absolute; left:12px; top:10px; color:#555; font-size:0.875rem;">Rp</span>
-                                    <input type="text" class="form-control" style="padding-left:35px;" placeholder="0">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Jenis penjualan</label>
-                                <select class="form-control">
-                                    <option selected>Retail (Eceran)</option>
-                                    <option>Grosir</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </form>
         </main>
     </div>
     
-    <script src="../js/api.js"></script>
-    <script src="../js/layout.js"></script>
-    <script src="../js/admin-core.js"></script>
-    <script src="../js/admin-form-produk.js"></script>
+    <script src="../js/api.js?v=4"></script>
+    <script src="../js/layout.js?v=4"></script>
+    <script src="../js/admin-core.js?v=4"></script>
+    <script src="../js/admin-form-produk.js?v=4"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await api.get('/produk/');
+                console.log('Produk data loaded:', response);
+            } catch (error) {
+                console.error('Failed to load produk:', error);
+            }
+        });
+    </script>
 </body>
 </html>

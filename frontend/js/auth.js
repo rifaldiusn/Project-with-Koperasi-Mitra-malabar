@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     localStorage.setItem('role', role);
                     localStorage.setItem('username', usernameInput);
+                    localStorage.setItem('id_akun', response.id_akun);
                     
                     // Routing otomatis dari respon API Backend
                     if (role === 'admin') {

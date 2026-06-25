@@ -99,6 +99,7 @@ CREATE TABLE Customer (
 
 CREATE TABLE Campaign (
     id_campaign INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(255),
     tanggal DATE,
     keterangan TEXT,
     budget INT,

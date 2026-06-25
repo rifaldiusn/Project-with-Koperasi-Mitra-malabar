@@ -62,6 +62,36 @@ def get_kunjungan_chart_data(year: int, start_month: int = 1, end_month: int = 1
     
     return [{"bulan": int(r.bulan), "total_kunjungan": int(r.total_kunjungan or 0)} for r in res]
 
+from sqlalchemy import or_
+from datetime import date
+
+@router.get("/search", response_model=list[schemas.Kunjungan])
+def search_kunjungan(
+    q: Optional[str] = None,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
+    db: Session = Depends(get_db),
+    _user=Depends(require_sales),
+):
+    query = db.query(models.Kunjungan).outerjoin(models.Customer)
+    
+    if q:
+        search_term = f"%{q}%"
+        query = query.filter(
+            or_(
+                models.Kunjungan.nama.ilike(search_term),
+                models.Customer.nama.ilike(search_term)
+            )
+        )
+        
+    if start_date:
+        query = query.filter(models.Kunjungan.tanggal >= start_date)
+        
+    if end_date:
+        query = query.filter(models.Kunjungan.tanggal <= end_date)
+        
+    return query.all()
+
 @router.get("/{id_kunjungan}", response_model=schemas.Kunjungan)
 def get_kunjungan(
     id_kunjungan: int,

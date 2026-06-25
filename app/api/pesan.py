@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_sales
+from app.services.deps import get_db, require_log_viewer
 from app.services import crud
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_pesan(
     payload: schemas.PesanCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     if payload.id_produk is not None:
         produk = db.query(models.Produk).filter(models.Produk.id_produk == payload.id_produk).first()
@@ -23,7 +23,7 @@ def create_pesan(
 @router.get("/", response_model=list[schemas.Pesan])
 def list_pesan(
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     return crud.pesan.get_multi(db)
 
@@ -47,7 +47,7 @@ def get_pesan_chart_data(year: int, start_month: int = 1, end_month: int = 12, d
 def get_pesan(
     id_pesan: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     pesan = crud.pesan.get(db, id=id_pesan)
     if not pesan:
@@ -59,7 +59,7 @@ def update_pesan(
     id_pesan: int,
     payload: schemas.PesanUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     pesan = crud.pesan.get(db, id=id_pesan)
     if not pesan:
@@ -76,7 +76,7 @@ def update_pesan(
 def delete_pesan(
     id_pesan: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     pesan = crud.pesan.get(db, id=id_pesan)
     if not pesan:

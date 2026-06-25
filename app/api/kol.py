@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_super_admin
+from app.services.deps import get_db, require_marketing
 from app.services import crud
 from app import schemas
 
@@ -11,14 +11,14 @@ router = APIRouter()
 def create_kol(
     payload: schemas.KOLCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_marketing),
 ):
     return crud.kol.create(db, obj_in=payload)
 
 @router.get("/", response_model=list[schemas.KOL])
 def list_kol(
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_marketing),
 ):
     return crud.kol.get_multi(db)
 
@@ -26,7 +26,7 @@ def list_kol(
 def get_kol(
     id_kol: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_marketing),
 ):
     kol = crud.kol.get(db, id=id_kol)
     if not kol:
@@ -38,7 +38,7 @@ def update_kol(
     id_kol: int,
     payload: schemas.KOLUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_marketing),
 ):
     kol = crud.kol.get(db, id=id_kol)
     if not kol:
@@ -49,7 +49,7 @@ def update_kol(
 def delete_kol(
     id_kol: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_marketing),
 ):
     kol = crud.kol.get(db, id=id_kol)
     if not kol:
