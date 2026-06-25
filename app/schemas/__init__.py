@@ -7,7 +7,7 @@ from .variasi import Variasi, VariasiBase, VariasiCreate, VariasiUpdate
 from .token import Token, TokenBase, TokenCreate
 from .data import Data, DataBase, DataCreate, DataUpdate
 from .pesan import Pesan, PesanBase, PesanCreate, PesanUpdate
-from .target import Target, TargetBase, TargetCreate
+from .target import Target, TargetBase, TargetCreate, TargetUpdate
 from .customer import Customer, CustomerBase, CustomerCreate, CustomerUpdate
 from .campaign import Campaign, CampaignBase, CampaignCreate, CampaignUpdate
 
@@ -28,7 +28,7 @@ __all__ = [
     "Token", "TokenBase", "TokenCreate",
     "Data", "DataBase", "DataCreate", "DataUpdate",
     "Pesan", "PesanBase", "PesanCreate", "PesanUpdate",
-    "Target", "TargetBase", "TargetCreate",
+    "Target", "TargetBase", "TargetCreate","TargetUpdate",
     "Customer", "CustomerBase", "CustomerCreate", "CustomerUpdate",   
     "Campaign", "CampaignBase", "CampaignCreate", "CampaignUpdate",
     "Penjualan", "PenjualanBase", "PenjualanCreate", "PenjualanUpdate",

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+    <!-- ponytail: Reused produk page directly for admin. YAGNI on duplicating layout and js. -->
     <div class="app-container">
         <main class="main-content">
             <div class="page-header header-spacing" style="display: flex; justify-content: space-between; align-items: center;">
@@ -18,21 +19,24 @@
                     <h1 style="margin: 0;">Daftar Produk</h1>
                 </div>
                 <div style="display: flex; gap: 1rem;">
-                    <a href="tambah-produk.html" class="btn btn-primary btn-theme-green">
+                    <a href="tambah-produk.html" class="btn btn-primary">
                         <i class="ph ph-plus" style="margin-right:0.5rem;"></i> Tambah Produk
                     </a>
-                    <button class="btn btn-outline">
+                    <button class="btn btn-outline" id="btn-input-excel">
                         <i class="ph ph-cloud-arrow-up" style="margin-right:0.5rem;"></i> Input Excell
                     </button>
+                    <input type="file" id="excel-file" accept=".xlsx, .xls" style="display: none;">
                 </div>
             </div>
+            
+            <div id="error-message" style="display: none; color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 15px;"></div>
+            <div id="success-message" style="display: none; color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 15px;"></div>
 
-            <div class="filter-container search-white" style="justify-content: space-between;">
-                <div class="search-wrapper" style="border:none; padding:0; width:300px; background: transparent;">
+            <div class="filter-container search-white">
+                <div class="search-wrapper" style="border:none; padding:0; width:100%; background: transparent;">
                     <i class="ph ph-magnifying-glass" style="color:#aaa;"></i>
-                    <input type="text" id="search-produk" placeholder="Search products..." style="background:transparent;">
+                    <input type="text" id="search-produk" class="form-control" placeholder="Cari berdasarkan nama atau kode produk..." style="padding-left:35px; width:100%; background:transparent;">
                 </div>
-                <button class="btn-text-action" style="color:#555;"><i class="ph ph-funnel"></i> Filter</button>
             </div>
 
             <div class="table-container">
@@ -47,47 +51,21 @@
                         </tr>
                     </thead>
                     <tbody id="produk-table-body">
-                        <tr>
-                            <td>1</td>
-                            <td>Kopi Arabika Malabar</td>
-                            <td>PRD-001</td>
-                            <td><span class="status-pill status-active">Aktif</span></td>
-                            <td style="text-align:right;">
-                                <div class="dropdown-wrapper">
-                                    <button class="dropdown-toggle" data-dropdown-toggle="dropdown-prod-1">
-                                        <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
-                                    </button>
-                                    <div class="dropdown-menu" id="dropdown-prod-1">
-                                        <a href="edit-produk.html" class="dropdown-item">
-                                            <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
-                                        </a>
-                                        <button class="dropdown-item danger">
-                                            <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Diisi otomatis oleh JavaScript -->
                     </tbody>
                 </table>
                 <div class="pagination" style="color:#777; font-size:0.875rem;">
-                    <span id="page-info">Showing 1 to 5 of 24 entries</span>
+                    <span id="page-info"></span>
                     <div class="page-numbers">
-                        <button class="page-btn"><i class="ph ph-caret-left"></i></button>
-                        <button class="page-btn active" style="background:#A3C644; border:none; color:white;">1</button>
-                        <button class="page-btn">2</button>
-                        <button class="page-btn">3</button>
-                        <span>...</span>
-                        <button class="page-btn"><i class="ph ph-caret-right"></i></button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     
-    <script src="../js/api.js"></script>
-    <script src="../js/layout.js"></script>
-    <script src="../js/admin-core.js"></script>
-    <script src="../js/admin-produk.js"></script>
+    <script src="../js/api.js?v=8"></script>
+    <script src="../js/layout.js?v=8"></script>
+    <script src="../js/admin-core.js?v=8"></script>
+    <script src="../js/produk.js?v=8"></script>
 </body>
 </html>

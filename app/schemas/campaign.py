@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import date
 
 class CampaignBase(BaseModel):
+    nama: Optional[str] = None
     tanggal: Optional[date] = None
     keterangan: Optional[str] = None
     budget: Optional[int] = None

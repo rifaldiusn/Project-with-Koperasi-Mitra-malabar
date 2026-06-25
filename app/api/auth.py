@@ -34,7 +34,8 @@ def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)
     return TokenResponse(
         access_token=access_token, 
         refresh_token=refresh_token, 
-        role=akun.role
+        role=akun.role,
+        id_akun=akun.id_akun
     )
 
 @router.post("/refresh", response_model=TokenResponse)
@@ -67,7 +68,8 @@ def refresh(request: Request, payload: RefreshRequest, db: Session = Depends(get
     return TokenResponse(
         access_token=new_access_token, 
         refresh_token=new_refresh_token, 
-        role=role
+        role=role,
+        id_akun=db_token.id_akun
     )
 
 @router.post("/logout")

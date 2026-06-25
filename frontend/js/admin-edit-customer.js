@@ -10,30 +10,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const form = document.getElementById('form-edit-customer');
-    // Use form query or button with form attribute 
     const submitBtn = document.querySelector('button[form="form-edit-customer"]') || form?.querySelector('button[type="submit"]');
 
     // 2. Fungsi untuk mengambil data customer (Simulasi API GET /api/customer/get/1)
     const loadCustomerData = async () => {
         try {
-            // Mock Data dari Test Plan PDF halaman 15
-            const mockData = {
-                id: 1,
-                nama: "Budi Santoso",
-                telp: "081234567890",
-                email: "budi.santoso@email.com",
-                jenis: "cafe",
-                alamat: "Jl. Sukras"
-            };
+            const data = await api.get(`/customer/${customerId}`);
 
             // Masukkan data ke dalam form input
             const fields = {
-                'cust-id': mockData.id,
-                'cust-nama': mockData.nama,
-                'cust-telp': mockData.telp,
-                'cust-email': mockData.email,
-                'cust-jenis': mockData.jenis,
-                'cust-alamat': mockData.alamat,
+                'cust-id': data.id_customer,
+                'cust-nama': data.nama,
+                'cust-telp': data.telp,
+                'cust-email': data.email,
+                'cust-jenis': data.jenis,
+                'cust-alamat': data.alamat,
+                'cust-link': data.link_gmaps || '',
             };
             
             Object.entries(fields).forEach(([id, value]) => {
@@ -46,6 +38,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error(error);
         }
     };
+
+    // 3. Handle submit
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
+            
+            const payload = {
+                nama: document.getElementById('cust-nama').value,
+                telp: document.getElementById('cust-telp').value,
+                email: document.getElementById('cust-email').value,
+                jenis: document.getElementById('cust-jenis').value,
+                alamat: document.getElementById('cust-alamat').value,
+                link_gmaps: document.getElementById('cust-link').value || null
+            };
+
+            try {
+                await api.put(`/customer/${customerId}`, payload);
+                showToast('Customer berhasil diperbarui!', 'success');
+                addNotification('Data customer telah diperbarui');
+                setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
+            } catch (error) {
+                showToast('Gagal memperbarui customer: ' + (error.message || ''), 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
+            }
+        });
+    }
 
     // Jalankan fungsi load data saat halaman dibuka
     loadCustomerData();

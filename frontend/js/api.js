@@ -30,11 +30,13 @@ const api = {
 
             if (!response.ok) {
                 if (response.status === 401) {
-                    // Unauthorized, redirect to login
+                    // Unauthorized - clear token and redirect to login
                     api.removeToken();
                     if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
-                        window.location.href = 'index.html';
+                        // Gunakan path absolut untuk hindari nyasar ke /campaign/index.html
+                        window.location.href = window.location.origin + window.location.pathname.replace(/\/(admin|campaign|leads)\/.*$/, '/index.html');
                     }
+                    throw { status: 401, message: "Sesi Anda telah habis. Silakan login kembali." };
                 }
                 throw { status: response.status, data };
             }

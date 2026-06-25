@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_sales
+from app.services.deps import get_db, require_log_viewer
 from app.services import crud
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_penjualan(
     payload: schemas.PenjualanCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     if payload.id_variasi is not None:
         variasi = db.query(models.Variasi).filter(models.Variasi.id_variasi == payload.id_variasi).first()
@@ -23,23 +23,30 @@ def create_penjualan(
 @router.get("/", response_model=list[schemas.Penjualan])
 def list_penjualan(
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     return crud.penjualan.get_multi(db)
 
 from sqlalchemy import func, extract
 
+from typing import Optional
+
 @router.get("/chart/data")
-def get_penjualan_chart_data(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+def get_penjualan_chart_data(year: int, start_month: int = 1, end_month: int = 12, id_variasi: Optional[int] = None, db: Session = Depends(get_db)):
     # ponytail: ultra minimal group by month with range
-    res = db.query(
+    query = db.query(
         extract('month', models.Penjualan.periode).label('bulan'),
         func.sum(models.Penjualan.nominal).label('total_nominal')
     ).filter(
         extract('year', models.Penjualan.periode) == year,
         extract('month', models.Penjualan.periode) >= start_month,
         extract('month', models.Penjualan.periode) <= end_month
-    ).group_by('bulan').order_by('bulan').all()
+    )
+    
+    if id_variasi is not None:
+        query = query.filter(models.Penjualan.id_variasi == id_variasi)
+        
+    res = query.group_by('bulan').order_by('bulan').all()
     
     return [{"bulan": int(r.bulan), "total_nominal": int(r.total_nominal or 0)} for r in res]
 
@@ -47,7 +54,7 @@ def get_penjualan_chart_data(year: int, start_month: int = 1, end_month: int = 1
 def get_penjualan(
     id_penjualan: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     penjualan = crud.penjualan.get(db, id=id_penjualan)
     if not penjualan:
@@ -59,7 +66,7 @@ def update_penjualan(
     id_penjualan: int,
     payload: schemas.PenjualanUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     penjualan = crud.penjualan.get(db, id=id_penjualan)
     if not penjualan:
@@ -76,7 +83,7 @@ def update_penjualan(
 def delete_penjualan(
     id_penjualan: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     penjualan = crud.penjualan.get(db, id=id_penjualan)
     if not penjualan:

@@ -21,37 +21,142 @@
             </div>
 
             <div class="dashboard-grid">
-                <div class="card">
-                    <h3 class="card-title">ERD Pesanan <br><span class="card-subtitle">(30 Hari Terakhir)</span></h3>
-                    <div class="erd-labels"><span>Dibuat</span><span>Dikirim</span></div>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">ERD Data <br>Produk: Kopi Arabika</h3>
-                    <div class="erd-labels erd-labels-wide"><span>Dilihat</span><span>Diklik</span><span>Suka</span><span>Keranjang</span></div>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Tren Penjualan</h3>
-                    <div class="chart-container">
-                        <svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%; height:100%;"><path d="M0,40 L0,35 C15,30 30,15 50,5 C70,-5 85,5 100,5 L100,40 Z" fill="#EAF2D3"></path><path d="M0,35 C15,30 30,15 50,5 C70,-5 85,5 100,5" fill="none" stroke="#6D8A21" stroke-width="2.5"></path></svg>
+                <div class="card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 class="card-title">ERD Pesanan</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <select id="erd-pesan-year" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <!-- Will be populated by JS -->
+                            </select>
+                            <select id="erd-pesan-start-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                            </select>
+                            <span>-</span>
+                            <select id="erd-pesan-end-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12" selected>Des</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="erdPesananChart"></canvas>
                     </div>
                 </div>
-                <div class="card">
-                    <h3 class="card-title">Data Kunjungan Harian</h3>
-                    <div class="chart-container">
-                        <svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%; height:100%;"><path d="M5,35 L20,30 L35,35 L50,20 L65,25 L85,15" fill="none" stroke="#6D8A21" stroke-width="2.5"></path></svg>
+                <div class="card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 class="card-title">ERD Data Produk (Keseluruhan)</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <select id="erd-data-year" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                            </select>
+                            <select id="erd-data-start-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                            </select>
+                            <span>-</span>
+                            <select id="erd-data-end-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12" selected>Des</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="erdDataChart"></canvas>
                     </div>
                 </div>
-                <div class="card full-width-card">
-                    <h3 class="card-title">Campaign Aktif per Hari</h3>
-                    <div class="chart-container chart-large">
-                        <svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%; height:100%;"><path d="M5,35 L15,33 L25,33 L30,22 L45,22 L50,15 L60,15 L65,18 L75,18 L85,20 L90,20 L100,5" fill="none" stroke="#B4D368" stroke-width="3"></path></svg>
+                <div class="card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 class="card-title">Tren Penjualan</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+                            <select id="tren-penjualan-variasi" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem; max-width: 150px;">
+                                <option value="">Semua Variasi</option>
+                            </select>
+                            <select id="tren-penjualan-year" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                            </select>
+                            <select id="tren-penjualan-start-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                            </select>
+                            <span>-</span>
+                            <select id="tren-penjualan-end-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12" selected>Des</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="trenPenjualanChart"></canvas>
+                    </div>
+                </div>
+                <div class="card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 class="card-title">Data Kunjungan</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+                            <select id="kunjungan-year" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                            </select>
+                            <select id="kunjungan-start-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                            </select>
+                            <span>-</span>
+                            <select id="kunjungan-end-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12" selected>Des</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="kunjunganChart"></canvas>
+                    </div>
+                </div>
+                <div class="card full-width-card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 class="card-title">Data Campaign</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+                            <select id="campaign-year" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                            </select>
+                            <select id="campaign-start-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                            </select>
+                            <span>-</span>
+                            <select id="campaign-end-month" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Agu</option><option value="9">Sep</option>
+                                <option value="10">Okt</option><option value="11">Nov</option><option value="12" selected>Des</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container chart-large" style="height: 350px;">
+                        <canvas id="campaignChart"></canvas>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/admin-core.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>

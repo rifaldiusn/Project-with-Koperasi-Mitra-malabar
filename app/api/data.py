@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_sales
+from app.services.deps import get_db, require_log_viewer
 from app.services import crud
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_data(
     payload: schemas.DataCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     if payload.id_produk is not None:
         produk = db.query(models.Produk).filter(models.Produk.id_produk == payload.id_produk).first()
@@ -23,14 +23,14 @@ def create_data(
 @router.get("/", response_model=list[schemas.Data])
 def list_data(
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     return crud.data.get_multi(db)
 
 from sqlalchemy import func, extract
 
-@router.get("/chart/produk/{id_produk}")
-def get_data_chart_produk(id_produk: int, year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
+@router.get("/chart/produk")
+def get_data_chart_produk(year: int, start_month: int = 1, end_month: int = 12, db: Session = Depends(get_db)):
     res = db.query(
         extract('month', models.Data.periode).label('bulan'),
         func.sum(models.Data.suka).label("suka"),
@@ -38,7 +38,6 @@ def get_data_chart_produk(id_produk: int, year: int, start_month: int = 1, end_m
         func.sum(models.Data.diklik).label("diklik"),
         func.sum(models.Data.dilihat).label("dilihat")
     ).filter(
-        models.Data.id_produk == id_produk,
         extract('year', models.Data.periode) == year,
         extract('month', models.Data.periode) >= start_month,
         extract('month', models.Data.periode) <= end_month
@@ -50,7 +49,7 @@ def get_data_chart_produk(id_produk: int, year: int, start_month: int = 1, end_m
 def get_data(
     id_data: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     data = crud.data.get(db, id=id_data)
     if not data:
@@ -62,7 +61,7 @@ def update_data(
     id_data: int,
     payload: schemas.DataUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     data = crud.data.get(db, id=id_data)
     if not data:
@@ -79,7 +78,7 @@ def update_data(
 def delete_data(
     id_data: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     data = crud.data.get(db, id=id_data)
     if not data:

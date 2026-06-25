@@ -1,12 +1,17 @@
 import os
 from dotenv import load_dotenv
 
-from app.db.session import SessionLocal
+from app.db.session import SessionLocal, engine
+from app.db.base import Base
+import app.models  # Register all models with Base
 from app.models.akun import Akun
 from app.core.security import hash_password
 
 def seed_super_admin() -> None:
     load_dotenv()
+
+    # Create all tables if they don't exist
+    Base.metadata.create_all(bind=engine)
 
     username = os.getenv("SUPER_ADMIN_USERNAME")
     password = os.getenv("SUPER_ADMIN_PASSWORD")

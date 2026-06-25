@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+    <!-- ponytail: Reused leads page directly for admin. YAGNI on duplicating layout and js. -->
     <div class="app-container">
         <main class="main-content">
             <div class="page-header">
@@ -24,49 +25,28 @@
                 </a>
             </div>
 
-            <div class="filter-container">
-                <input type="text" id="search-kunjungan" class="form-control" placeholder="Cari nama customer...">
-                <input type="date" id="date-start" class="form-control">
-                <input type="date" id="date-end" class="form-control">
-                <button class="btn btn-outline">Filter</button>
+            <div class="filter-container" style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+                <div style="width: 100%;">
+                    <label class="form-label" style="font-weight: 500; margin-bottom: 0.5rem; display: block; color: var(--text-muted);">Cari Kunjungan</label>
+                    <input type="text" id="search-kunjungan" class="form-control" placeholder="Cari berdasarkan nama kunjungan atau nama customer..." style="width: 100%;">
+                </div>
+                <div>
+                    <label class="form-label" style="font-weight: 500; margin-bottom: 0.5rem; display: block; color: var(--text-muted);">Periode Mulai</label>
+                    <input type="date" id="date-start" class="form-control" style="width: 180px;" title="Tanggal mulai periode kunjungan">
+                </div>
+                <div>
+                    <label class="form-label" style="font-weight: 500; margin-bottom: 0.5rem; display: block; color: var(--text-muted);">Periode Akhir</label>
+                    <input type="date" id="date-end" class="form-control" style="width: 180px;" title="Tanggal batas akhir kunjungan">
+                </div>
             </div>
 
             <div class="table-container">
                 <table class="data-table">
                     <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Kunjungan</th>
-                            <th>Tanggal</th>
-                            <th>Tujuan</th>
-                            <th style="text-align:right;">Aksi</th>
-                        </tr>
+                        <tr><th>No</th><th>Nama Kunjungan</th><th>Customer</th><th>Tanggal</th><th>Tujuan</th><th style="text-align:right;">Aksi</th></tr>
                     </thead>
                     <tbody id="kunjungan-table-body">
-                        <tr>
-                            <td>1</td>
-                            <td>Kunjungan ke Toko A</td>
-                            <td>20 Juni 2026</td>
-                            <td>Presentasi Produk Baru</td>
-                            <td style="text-align:right;">
-                                <div class="dropdown-wrapper">
-                                    <button class="dropdown-toggle" data-dropdown-toggle="dropdown-kunjungan-1">
-                                        <i class="ph ph-dots-three-vertical" style="font-size: 20px;"></i>
-                                    </button>
-                                    <div class="dropdown-menu" id="dropdown-kunjungan-1">
-                                        <button class="dropdown-item">
-                                            <i class="ph ph-eye" style="margin-right: 0.5rem;"></i>Lihat Detail
-                                        </button>
-                                        <button class="dropdown-item">
-                                            <i class="ph ph-pencil" style="margin-right: 0.5rem;"></i>Edit
-                                        </button>
-                                        <button class="dropdown-item danger">
-                                            <i class="ph ph-trash" style="margin-right: 0.5rem;"></i>Hapus
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Diisi otomatis oleh JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -75,6 +55,6 @@
     <script src="../js/api.js"></script>
     <script src="../js/layout.js"></script>
     <script src="../js/admin-core.js"></script>
-    <script src="../js/admin-kunjungan.js"></script>
+    <script src="../js/kunjungan.js?v=4"></script>
 </body>
 </html>

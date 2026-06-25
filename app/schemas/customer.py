@@ -7,6 +7,7 @@ class CustomerBase(BaseModel):
     email: Optional[str] = None
     telp: Optional[str] = None
     jenis: Optional[str] = None
+    link_gmaps: Optional[str] = None
 
 class CustomerCreate(CustomerBase):
     pass

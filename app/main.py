@@ -43,12 +43,9 @@ app.include_router(penjualan_router, prefix="/api/penjualan", tags=["penjualan"]
 app.include_router(pesan_router, prefix="/api/pesan", tags=["pesan"])
 #T
 app.include_router(tahapan_router, prefix="/api/tahapan", tags=["tahapan"])
+app.include_router(target_router, prefix="/api/target", tags=["target"])
 #V
 app.include_router(variasi_router, prefix="/api/variasi", tags=["variasi"])
-
-# Mount static uploads
-os.makedirs("uploads", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Mount frontend files (HTML/CSS/JS) as the default route
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

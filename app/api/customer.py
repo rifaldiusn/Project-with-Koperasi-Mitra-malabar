@@ -5,6 +5,10 @@ from app.services.deps import get_db, require_sales
 from app.services import crud
 from app import schemas
 
+from typing import Optional
+from sqlalchemy import or_
+from app import models
+
 router = APIRouter()
 
 @router.post("/", response_model=schemas.Customer)
@@ -23,6 +27,22 @@ def list_customer(
     _user=Depends(require_sales),
 ):
     return crud.customer.get_multi(db)
+
+@router.get("/search", response_model=list[schemas.Customer])
+def search_customer(
+    q: str,
+    db: Session = Depends(get_db),
+    _user=Depends(require_sales),
+):
+    query = f"%{q}%"
+    customers = db.query(models.Customer).filter(
+        or_(
+            models.Customer.nama.ilike(query),
+            models.Customer.telp.ilike(query),
+            models.Customer.email.ilike(query)
+        )
+    ).all()
+    return customers
 
 @router.get("/{id_customer}", response_model=schemas.Customer)
 def get_customer(

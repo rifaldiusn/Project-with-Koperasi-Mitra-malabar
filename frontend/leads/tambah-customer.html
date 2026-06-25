@@ -30,23 +30,23 @@
                 <form id="form-tambah-customer">
                     <div class="form-group">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" placeholder="Masukkan nama lengkap sesuai identitas" required>
+                        <input type="text" class="form-control" placeholder="Masukkan nama lengkap sesuai identitas" required id="cust-nama">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Nomor Telepon</label>
-                            <input type="text" class="form-control" placeholder="Contoh: 081234567890" required>
+                            <input type="text" class="form-control" placeholder="Contoh: 081234567890" required id="cust-telp">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" placeholder="alamat@email.com">
+                            <input type="email" class="form-control" placeholder="alamat@email.com" id="cust-email">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Jenis Customer</label>
-                        <select class="form-control" required>
+                        <select class="form-control" required id="cust-jenis">
                             <option value="">Pilih jenis customer</option>
                             <option value="cafe">Cafe</option>
                             <option value="retail">Retail</option>
@@ -56,14 +56,14 @@
 
                     <div class="form-group">
                         <label class="form-label">Alamat Domisili</label>
-                        <textarea class="form-control" rows="3" placeholder="Masukkan alamat lengkap (Jalan, RT/RW, Desa/Kelurahan)" required></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Masukkan alamat lengkap (Jalan, RT/RW, Desa/Kelurahan)" required id="cust-alamat"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Link Google Maps</label>
                         <div style="position:relative;">
                             <i class="ph ph-map-pin" style="position:absolute; left:12px; top:12px; color:#6D8A21; font-size:18px;"></i>
-                            <input type="url" class="form-control" placeholder="Tempel link Google Maps di sini (contoh: https://maps.app.goo.gl/...)" style="padding-left:38px;">
+                            <input type="text" class="form-control" placeholder="Tempel link Google Maps di sini (contoh: https://maps.app.goo.gl/...)" style="padding-left:38px;" id="cust-link">
                         </div>
                     </div>
                 </form>
@@ -77,14 +77,24 @@
         document.getElementById('form-tambah-customer').addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = document.querySelector('button[form="form-tambah-customer"]');
+            
+            const payload = {
+                nama: document.getElementById('cust-nama').value,
+                telp: document.getElementById('cust-telp').value,
+                email: document.getElementById('cust-email').value,
+                jenis: document.getElementById('cust-jenis').value,
+                alamat: document.getElementById('cust-alamat').value,
+                link_gmaps: document.getElementById('cust-link').value || null
+            };
+
             if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; }
             try {
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await api.post('/customer/', payload);
                 showToast('Customer berhasil ditambahkan!', 'success');
                 addNotification('Customer baru telah ditambahkan');
                 setTimeout(() => { window.location.href = 'customer.html'; }, 1000);
             } catch (error) {
-                showToast('Gagal menambahkan customer.', 'error');
+                showToast('Gagal menambahkan customer: ' + (error.message || ''), 'error');
             } finally {
                 if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Simpan Customer'; }
             }

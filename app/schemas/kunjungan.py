@@ -1,6 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import date
+from .customer import Customer
+from .file import File
 
 class KunjunganBase(BaseModel):
     nama: Optional[str] = None
@@ -19,5 +21,7 @@ class KunjunganUpdate(KunjunganBase):
 
 class Kunjungan(KunjunganBase):
     id_kunjungan: int
+    customer: Optional[Customer] = None
+    file: Optional[File] = None
 
     model_config = ConfigDict(from_attributes=True)

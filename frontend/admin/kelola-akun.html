@@ -29,10 +29,12 @@
                     <i class="ph ph-magnifying-glass" style="position:absolute; left:12px; top:12px; color:#aaa;"></i>
                     <input type="text" id="search-akun" class="form-control" placeholder="Cari username atau nama..." style="padding-left:35px;">
                 </div>
-                <button class="btn btn-outline">
-                    <i class="ph ph-funnel" style="margin-right:6px;"></i>
-                    Filter
-                </button>
+                <select id="filter-role" class="form-control" style="width: auto;">
+                    <option value="">Semua Role</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Leads</option>
+                    <option value="3">Campaign</option>
+                </select>
             </div>
 
             <div class="table-container">

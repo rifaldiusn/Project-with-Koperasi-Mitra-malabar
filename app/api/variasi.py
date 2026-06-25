@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_sales
+from app.services.deps import get_db, require_log_viewer
 from app.services import crud
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_variasi(
     payload: schemas.VariasiCreate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     existing = db.query(models.Variasi).filter(models.Variasi.kode == payload.kode).first()
     if existing:
@@ -27,7 +27,7 @@ def create_variasi(
 @router.get("/", response_model=list[schemas.Variasi])
 def list_variasi(
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     return crud.variasi.get_multi(db)
 
@@ -35,7 +35,7 @@ def list_variasi(
 def get_variasi(
     id_variasi: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     variasi = crud.variasi.get(db, id=id_variasi)
     if not variasi:
@@ -47,7 +47,7 @@ def update_variasi(
     id_variasi: int,
     payload: schemas.VariasiUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     variasi = crud.variasi.get(db, id=id_variasi)
     if not variasi:
@@ -69,7 +69,7 @@ def update_variasi(
 def delete_variasi(
     id_variasi: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_sales),
+    _user=Depends(require_log_viewer),
 ):
     variasi = crud.variasi.get(db, id=id_variasi)
     if not variasi:
