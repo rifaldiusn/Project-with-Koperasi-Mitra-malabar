@@ -96,11 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
     `;
 
+    // Determine logo path based on current directory
+    const currentPath = window.location.pathname;
+    let logoPath = 'images/id-11134233.png'; // Default for index.html
+    if (currentPath.includes('/admin/') || currentPath.includes('/campaign/') || currentPath.includes('/leads/')) {
+        logoPath = '../images/id-11134233.png';
+    }
+    
     const sidebarHTML = `
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo-circle">M</div>
-                <div class="sidebar-logo-text">Mitra Malabar</div>
+                <img src="${logoPath}" alt="Logo Koperasi Mitra Malabar" style="max-width: 180px; max-height: 120px; width: auto; height: auto; object-fit: contain;">
             </div>
             <nav class="sidebar-menu">
                 ${menuItems}

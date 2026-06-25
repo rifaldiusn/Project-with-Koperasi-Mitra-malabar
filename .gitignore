@@ -33,13 +33,3 @@ Thumbs.db
 # Local data
 uploads/
 
-app/services/gdrive
-
-# Google OAuth & Credentials
-*.json
-!package.json
-!package-lock.json
-client_secret*.json
-credentials.json
-token.json
-mitra-malabar*.json
