@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('produk-table-body');
     const searchInput = document.getElementById('search-produk');
+    const btnExcel = document.getElementById('btn-input-excel');
+    const fileInput = document.getElementById('excel-file');
     
     let debounceTimer;
 
@@ -87,6 +89,57 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (searchInput) searchInput.addEventListener('input', handleSearch);
+
+    // Excel Upload Logic
+    if (btnExcel && fileInput) {
+        btnExcel.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+                if (typeof showToast === 'function') {
+                    showToast('Ekstensi file tidak didukung', 'error');
+                } else {
+                    alert('Ekstensi file tidak didukung');
+                }
+                fileInput.value = '';
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await api.postFormData('/file/excel/add', formData);
+                
+                if (typeof showToast === 'function') {
+                    showToast(response.message || 'File berhasil diupload', 'success');
+                } else {
+                    alert(response.message || 'File berhasil diupload');
+                }
+                fetchProduk(); // Refresh data
+            } catch (error) {
+                console.error(error);
+                let msg = 'Terjadi kesalahan saat upload';
+                if (error.data && error.data.message) {
+                    msg = error.data.message;
+                } else if (error.message) {
+                    msg = error.message;
+                }
+                if (typeof showToast === 'function') {
+                    showToast(msg, 'error');
+                } else {
+                    alert(msg);
+                }
+            } finally {
+                fileInput.value = ''; // Reset input
+            }
+        });
+    }
 
     // Initial fetch
     fetchProduk();

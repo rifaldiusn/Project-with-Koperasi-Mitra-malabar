@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.deps import get_db, require_marketing, require_super_admin
+from app.services.deps import get_db, require_log_viewer, require_super_admin
 from app.services import crud
 from app import models, schemas
 
@@ -11,7 +11,7 @@ router = APIRouter()
 def create_campaign(
     payload: schemas.CampaignCreate,
     db: Session = Depends(get_db),
-    current_user=Depends(require_marketing),
+    current_user=Depends(require_log_viewer),
 ):
     data = payload.model_dump()
     data["id_akun"] = current_user.id_akun
@@ -20,7 +20,7 @@ def create_campaign(
 @router.get("/", response_model=list[schemas.Campaign])
 def list_campaign(
     db: Session = Depends(get_db),
-    _user=Depends(require_marketing),
+    _user=Depends(require_log_viewer),
 ):
     return crud.campaign.get_multi(db)
 
@@ -44,7 +44,7 @@ def get_campaign_chart_data(year: int, start_month: int = 1, end_month: int = 12
 def get_campaign(
     id_campaign: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_marketing),
+    _user=Depends(require_log_viewer),
 ):
     campaign = crud.campaign.get(db, id=id_campaign)
     if not campaign:
@@ -56,7 +56,7 @@ def update_campaign(
     id_campaign: int,
     payload: schemas.CampaignUpdate,
     db: Session = Depends(get_db),
-    _user=Depends(require_marketing),
+    _user=Depends(require_log_viewer),
 ):
     campaign = crud.campaign.get(db, id=id_campaign)
     if not campaign:
@@ -67,7 +67,7 @@ def update_campaign(
 def delete_campaign(
     id_campaign: int,
     db: Session = Depends(get_db),
-    _user=Depends(require_super_admin),
+    _user=Depends(require_log_viewer),
 ):
     campaign = crud.campaign.get(db, id=id_campaign)
     if not campaign:

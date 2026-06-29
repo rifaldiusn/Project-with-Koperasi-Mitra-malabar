@@ -33,3 +33,5 @@ Thumbs.db
 # Local data
 uploads/
 
+/app/services/gdrive
+
